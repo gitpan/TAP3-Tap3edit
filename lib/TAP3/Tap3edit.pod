@@ -152,7 +152,7 @@ Decode a TAP file with a certain specification file
 
   $tap3 = TAP3::Tap3edit->new;
 
-  $tap3->asn_filename("/home/javier/MySpec/TAP0304.asn");
+  $tap3->spec_file("/home/javier/MySpec/TAP0304.asn");
 
   # Will decode the test TAP file with the specification of TAP3 release 4.
   $tap3->decode("TDOPER3OPER400003")  or  die $tap3->error; # Remember to check the return values

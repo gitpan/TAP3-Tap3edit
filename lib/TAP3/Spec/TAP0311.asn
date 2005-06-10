@@ -1,20 +1,20 @@
 -- http://www.tap3edit.com
 --
--- Copyright (c) 2000 GSM MoU Association. Restricted âˆ’ ConÂ­
+-- Copyright (c) 2000 GSM MoU Association. Restricted ¿ Con­
 -- fidential Information.  Access to and distribution of this
 -- document is restricted to the persons listed under the
 -- heading Security Classification Category*. This document
--- is confidential to the Association and is subject to copyÂ­
+-- is confidential to the Association and is subject to copy­
 -- right protection.  This document is to be used only for
--- the purposes for which it has been supplied and informaÂ­
+-- the purposes for which it has been supplied and informa­
 -- tion contained in it must not be disclosed or in any other
 -- way made available, in whole or in part, to persons other
 -- than those listed under Security Classification Category*
 -- without the prior written approval of the Association. The
--- GSM MoU Association (Ã¢AssociationÃ¢) makes no representaÂ­
+-- GSM MoU Association (âAssociationâ) makes no representa­
 -- tion, warranty or undertaking (express or implied) with
 -- respect to and does not accept any responsibility for, and
--- hereby disclaims liability for the accuracy or completeÂ­
+-- hereby disclaims liability for the accuracy or complete­
 -- ness or timeliness of the information contained in this
 -- document. The information contained in this document may
 -- be subject to change without prior notice.
@@ -22,15 +22,15 @@
 --
 -- The following ASN.1 specification defines the abstract syntax for 
 --
--- Data Record Format Version 03 
--- Release 11
+--        Data Record Format Version 03 
+--                           Release 11
 --
 -- The specification is structured as follows:
--- (1) structure of the Tap batch
--- (2) definition of the individual Tap 'records' 
--- (3) Tap data items and groups of data items used within (2)
--- (4) Common, non-Tap data types
--- (5) Tap data items for content charging
+--   (1) structure of the Tap batch
+--   (2) definition of the individual Tap 'records' 
+--   (3) Tap data items and groups of data items used within (2)
+--   (4) Common, non-Tap data types
+--   (5) Tap data items for content charging
 --
 -- It is mainly a translation from the logical structure
 -- diagrams. Where appropriate, names used within the 
@@ -41,7 +41,7 @@
 --
 
 
--- TAP-0311 DEFINITIONS IMPLICIT TAGS ::= 
+-- TAP-0311  DEFINITIONS IMPLICIT TAGS  ::= 
 
 -- BEGIN 
 
@@ -51,58 +51,60 @@
 
 DataInterChange ::= CHOICE 
 {
- transferBatch TransferBatch, 
- notification Notification
+    transferBatch TransferBatch, 
+    notification  Notification,
+...
 }
 
 -- Batch Control Information must always, both logically and physically, be the
 -- first group/item within Transfer Batch - this ensures that the TAP release 
--- version can be readily identified. Any new groups/items required may be 
+-- version can be readily identified.  Any new groups/items required may be 
 -- inserted at any point after Batch Control Information
 
 TransferBatch ::= [APPLICATION 1] SEQUENCE
 {
- batchControlInfo BatchControlInfo OPTIONAL,
- accountingInfo AccountingInfo OPTIONAL,
- networkInfo NetworkInfo OPTIONAL,
- vasInfo VasInfoList OPTIONAL,
- messageDescriptionInfo MessageDescriptionInfoList OPTIONAL,
- callEventDetails CallEventDetailList OPTIONAL,
- auditControlInfo AuditControlInfo OPTIONAL
+    batchControlInfo       BatchControlInfo            OPTIONAL, -- *m.m.
+    accountingInfo         AccountingInfo              OPTIONAL,
+    networkInfo            NetworkInfo                 OPTIONAL, -- *m.m.
+    messageDescriptionInfo MessageDescriptionInfoList  OPTIONAL,
+    callEventDetails       CallEventDetailList         OPTIONAL, -- *m.m.
+    auditControlInfo       AuditControlInfo            OPTIONAL, -- *m.m.
+...
 }
 
 -- The logical and physical structures must not be changed up to and including the 
 -- Release Version Number - this ensures that the TAP release version can be readily 
--- identified. Any new groups/items required may be inserted at any point after 
+-- identified.  Any new groups/items required may be inserted at any point after 
 -- Release Version Number
 
 Notification ::= [APPLICATION 2] SEQUENCE
 {
- sender Sender OPTIONAL,
- recipient Recipient OPTIONAL,
- fileSequenceNumber FileSequenceNumber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- fileCreationTimeStamp FileCreationTimeStamp OPTIONAL,
- fileAvailableTimeStamp FileAvailableTimeStamp OPTIONAL,
- transferCutOffTimeStamp TransferCutOffTimeStamp OPTIONAL,
- specificationVersionNumber SpecificationVersionNumber OPTIONAL,
- releaseVersionNumber ReleaseVersionNumber OPTIONAL,
- fileTypeIndicator FileTypeIndicator OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    sender                    Sender                     OPTIONAL, -- *m.m.
+    recipient                 Recipient                  OPTIONAL, -- *m.m.
+    fileSequenceNumber        FileSequenceNumber         OPTIONAL, -- *m.m.
+    rapFileSequenceNumber     RapFileSequenceNumber      OPTIONAL,
+    fileCreationTimeStamp     FileCreationTimeStamp      OPTIONAL,
+    fileAvailableTimeStamp    FileAvailableTimeStamp     OPTIONAL, -- *m.m.
+    transferCutOffTimeStamp   TransferCutOffTimeStamp    OPTIONAL, -- *m.m.
+    specificationVersionNumber SpecificationVersionNumber OPTIONAL, -- *m.m.
+    releaseVersionNumber      ReleaseVersionNumber       OPTIONAL, -- *m.m.
+    fileTypeIndicator         FileTypeIndicator          OPTIONAL,
+    operatorSpecInformation   OperatorSpecInfoList       OPTIONAL,
+...
 }
 
-CallEventDetailList ::= [APPLICATION 3] SEQUENCE OF CallEventDetail
+CallEventDetailList ::=  [APPLICATION 3] SEQUENCE OF CallEventDetail
 
 CallEventDetail ::= CHOICE
 {
- mobileOriginatedCall MobileOriginatedCall,
- mobileTerminatedCall MobileTerminatedCall,
- supplServiceEvent SupplServiceEvent,
- serviceCentreUsage ServiceCentreUsage,
- valueAddedService ValueAddedService,
- gprsCall GprsCall,
- contentTransaction ContentTransaction,
- locationService LocationService
+    mobileOriginatedCall   MobileOriginatedCall,
+    mobileTerminatedCall   MobileTerminatedCall,
+    supplServiceEvent      SupplServiceEvent,
+    serviceCentreUsage     ServiceCentreUsage,
+    gprsCall               GprsCall,
+    contentTransaction     ContentTransaction,
+    locationService        LocationService,
+...
 }
 
 --
@@ -111,162 +113,147 @@ CallEventDetail ::= CHOICE
 
 -- The logical and physical structures must not be changed up to and including the 
 -- Release Version Number - this ensures that the TAP release version can be readily 
--- identified. Any new groups/items required may be inserted at any point after 
+-- identified.  Any new groups/items required may be inserted at any point after 
 -- Release Version Number.
--- Please note that this implies also that the 'SEQUENCE OF' construct in the ASN.1 
--- specification cannot be replaced by 'SET OF' within the Transfer Batch, 
+-- Please note that this implies also that the ‘SEQUENCE OF’ construct in the ASN.1 
+-- specification cannot be replaced by ‘SET OF’ within the Transfer Batch, 
 -- Notification and Batch Control Information.
 
 BatchControlInfo ::= [APPLICATION 4] SEQUENCE
 {
- sender Sender OPTIONAL,
- recipient Recipient OPTIONAL,
- fileSequenceNumber FileSequenceNumber OPTIONAL,
- fileCreationTimeStamp FileCreationTimeStamp OPTIONAL,
- transferCutOffTimeStamp TransferCutOffTimeStamp OPTIONAL,
- fileAvailableTimeStamp FileAvailableTimeStamp OPTIONAL,
- specificationVersionNumber SpecificationVersionNumber OPTIONAL,
- releaseVersionNumber ReleaseVersionNumber OPTIONAL,
- fileTypeIndicator FileTypeIndicator OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    sender                   Sender                      OPTIONAL, -- *m.m.
+    recipient                Recipient                   OPTIONAL, -- *m.m.
+    fileSequenceNumber       FileSequenceNumber          OPTIONAL, -- *m.m.
+    fileCreationTimeStamp    FileCreationTimeStamp       OPTIONAL,
+    transferCutOffTimeStamp  TransferCutOffTimeStamp     OPTIONAL, -- *m.m.
+    fileAvailableTimeStamp   FileAvailableTimeStamp      OPTIONAL, -- *m.m.
+    specificationVersionNumber SpecificationVersionNumber OPTIONAL, -- *m.m.
+    releaseVersionNumber     ReleaseVersionNumber        OPTIONAL, -- *m.m.
+    fileTypeIndicator        FileTypeIndicator           OPTIONAL,
+    rapFileSequenceNumber    RapFileSequenceNumber       OPTIONAL,
+    operatorSpecInformation  OperatorSpecInfoList        OPTIONAL,
+...
 }
 
 AccountingInfo ::= [APPLICATION 5] SEQUENCE
 {
- taxation TaxationList OPTIONAL,
- discounting DiscountingList OPTIONAL,
- localCurrency LocalCurrency OPTIONAL,
- tapCurrency TapCurrency OPTIONAL,
- currencyConversionInfo CurrencyConversionList OPTIONAL,
- tapDecimalPlaces TapDecimalPlaces OPTIONAL
+    taxation                    TaxationList           OPTIONAL,
+    discounting                 DiscountingList        OPTIONAL,
+    localCurrency               LocalCurrency          OPTIONAL, -- *m.m.
+    tapCurrency                 TapCurrency            OPTIONAL,
+    currencyConversionInfo      CurrencyConversionList OPTIONAL,
+    tapDecimalPlaces            TapDecimalPlaces       OPTIONAL, -- *m.m.
+...
 }
 
 NetworkInfo ::= [APPLICATION 6] SEQUENCE
 {
- utcTimeOffsetInfo UtcTimeOffsetInfoList OPTIONAL,
- recEntityInfo RecEntityInfoList OPTIONAL,
- networkType NetworkType OPTIONAL,
- calledNumAnalysis CalledNumAnalysisList OPTIONAL
+    utcTimeOffsetInfo           UtcTimeOffsetInfoList OPTIONAL, -- *m.m.
+    recEntityInfo               RecEntityInfoList     OPTIONAL,
+...
 }
-
-VasInfoList ::= [APPLICATION 7] SEQUENCE OF VasInformation
 
 MessageDescriptionInfoList ::= [APPLICATION 8] SEQUENCE OF MessageDescriptionInformation
 
 MobileOriginatedCall ::= [APPLICATION 9] SEQUENCE
 {
- basicCallInformation MoBasicCallInformation OPTIONAL,
- locationInformation LocationInformation OPTIONAL,
- equipmentInformation EquipmentInformation OPTIONAL,
- basicServiceUsedList BasicServiceUsedList OPTIONAL,
- supplServiceUsedList SupplServiceUsedList OPTIONAL,
- camelServiceUsed CamelServiceUsed OPTIONAL,
- valueAddedServiceUsedList ValueAddedServiceUsedList OPTIONAL,
- dualServiceRequested DualServiceCode OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
-} 
+    basicCallInformation      MoBasicCallInformation    OPTIONAL, -- *m.m.
+    locationInformation       LocationInformation       OPTIONAL, -- *m.m.
+    equipmentIdentifier       ImeiOrEsn                 OPTIONAL,
+    basicServiceUsedList      BasicServiceUsedList      OPTIONAL, -- *m.m.
+    supplServiceCode          SupplServiceCode          OPTIONAL,
+    thirdPartyInformation     ThirdPartyInformation     OPTIONAL,
+    camelServiceUsed          CamelServiceUsed          OPTIONAL,
+    operatorSpecInformation   OperatorSpecInfoList      OPTIONAL,
+...
+}    
 
 
 MobileTerminatedCall ::= [APPLICATION 10] SEQUENCE
 {
- basicCallInformation MtBasicCallInformation OPTIONAL,
- locationInformation LocationInformation OPTIONAL,
- equipmentInformation EquipmentInformation OPTIONAL,
- basicServiceUsedList BasicServiceUsedList OPTIONAL,
- supplServiceUsedList SupplServiceUsedList OPTIONAL,
- camelServiceUsed CamelServiceUsed OPTIONAL,
- valueAddedServiceUsedList ValueAddedServiceUsedList OPTIONAL,
- dualServiceRequested DualServiceCode OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
-} 
+    basicCallInformation      MtBasicCallInformation    OPTIONAL, -- *m.m.
+    locationInformation       LocationInformation       OPTIONAL, -- *m.m.
+    equipmentIdentifier       ImeiOrEsn                 OPTIONAL,
+    basicServiceUsedList      BasicServiceUsedList      OPTIONAL, -- *m.m.
+    camelServiceUsed          CamelServiceUsed          OPTIONAL,
+    operatorSpecInformation   OperatorSpecInfoList      OPTIONAL,
+...
+}    
 
 
 SupplServiceEvent ::= [APPLICATION 11] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- chargeableSubscriber ChargeableSubscriber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- locationInformation LocationInformation OPTIONAL,
- equipmentInformation EquipmentInformation OPTIONAL,
- supplServiceUsed SupplServiceUsed OPTIONAL,
- simToolkitIndicator SimToolkitIndicator OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    chargeableSubscriber        ChargeableSubscriber    OPTIONAL, -- *m.m.
+    rapFileSequenceNumber       RapFileSequenceNumber   OPTIONAL,
+    locationInformation         LocationInformation     OPTIONAL, -- *m.m.
+    equipmentIdentifier         ImeiOrEsn               OPTIONAL, -- *m.m.
+    supplServiceUsed            SupplServiceUsed        OPTIONAL, -- *m.m.
+    operatorSpecInformation     OperatorSpecInfoList    OPTIONAL,
+...
 }
 
 
 ServiceCentreUsage ::= [APPLICATION 12] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- basicInformation ScuBasicInformation OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- servingNetwork ServingNetwork OPTIONAL,
- recEntityCode RecEntityCode OPTIONAL,
- chargeInformation ChargeInformation OPTIONAL,
- scuChargeType ScuChargeType OPTIONAL,
- scuTimeStamps ScuTimeStamps OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
-}
-
-ValueAddedService ::= [APPLICATION 13] SEQUENCE
-{
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- chargeableSubscriber ScuVasChargeableSubscriber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- servingNetwork ServingNetwork OPTIONAL,
- valueAddedServiceUsed ValueAddedServiceUsed OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    basicInformation            ScuBasicInformation     OPTIONAL, -- *m.m.
+    rapFileSequenceNumber       RapFileSequenceNumber   OPTIONAL,
+    servingNetwork              ServingNetwork          OPTIONAL,
+    recEntityCode               RecEntityCode           OPTIONAL, -- *m.m.
+    chargeInformation           ChargeInformation       OPTIONAL, -- *m.m.
+    scuChargeType               ScuChargeType           OPTIONAL, -- *m.m.
+    scuTimeStamps               ScuTimeStamps           OPTIONAL, -- *m.m.
+    operatorSpecInformation     OperatorSpecInfoList    OPTIONAL,
+...
 }
 
 GprsCall ::= [APPLICATION 14] SEQUENCE
 {
- typeOfControllingNode TypeOfControllingNode OPTIONAL,
- gprsBasicCallInformation GprsBasicCallInformation OPTIONAL,
- gprsLocationInformation GprsLocationInformation OPTIONAL,
- equipmentInformation EquipmentInformation OPTIONAL,
- gprsServiceUsed GprsServiceUsed OPTIONAL,
- camelServiceUsed CamelServiceUsed OPTIONAL,
- valueAddedServiceUsedList ValueAddedServiceUsedList OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    gprsBasicCallInformation  GprsBasicCallInformation  OPTIONAL, -- *m.m.
+    gprsLocationInformation   GprsLocationInformation   OPTIONAL, -- *m.m.
+    equipmentIdentifier       ImeiOrEsn                 OPTIONAL,
+    gprsServiceUsed           GprsServiceUsed           OPTIONAL, -- *m.m.
+    camelServiceUsed          CamelServiceUsed          OPTIONAL,
+    operatorSpecInformation   OperatorSpecInfoList      OPTIONAL,
+...
 }
 
 ContentTransaction ::= [APPLICATION 17] SEQUENCE
 {
- contentTransactionBasicInfo ContentTransactionBasicInfo OPTIONAL,
- chargedPartyInformation ChargedPartyInformation OPTIONAL,
- servingPartiesInformation ServingPartiesInformation OPTIONAL,
- contentServiceUsed ContentServiceUsedList OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+ contentTransactionBasicInfo ContentTransactionBasicInfo OPTIONAL, -- *m.m.
+ chargedPartyInformation     ChargedPartyInformation     OPTIONAL, -- *m.m.
+ servingPartiesInformation   ServingPartiesInformation   OPTIONAL, -- *m.m.
+ contentServiceUsed          ContentServiceUsedList      OPTIONAL, -- *m.m.
+ operatorSpecInformation     OperatorSpecInfoList        OPTIONAL,
+...
 }
 
 LocationService ::= [APPLICATION 297] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- recEntityCode RecEntityCode OPTIONAL,
- callReference CallReference OPTIONAL,
- trackingCustomerInformation TrackingCustomerInformation OPTIONAL,
- lCSSPInformation LCSSPInformation OPTIONAL,
- trackedCustomerInformation TrackedCustomerInformation OPTIONAL,
- locationServiceUsage LocationServiceUsage OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    rapFileSequenceNumber    RapFileSequenceNumber       OPTIONAL,
+    recEntityCode            RecEntityCode               OPTIONAL, -- *m.m.
+    callReference            CallReference               OPTIONAL,
+    trackingCustomerInformation TrackingCustomerInformation OPTIONAL,
+    lCSSPInformation         LCSSPInformation            OPTIONAL,
+    trackedCustomerInformation TrackedCustomerInformation  OPTIONAL,
+    locationServiceUsage     LocationServiceUsage        OPTIONAL, -- *m.m.
+    operatorSpecInformation  OperatorSpecInfoList        OPTIONAL,
+...
 }
 
 AuditControlInfo ::= [APPLICATION 15] SEQUENCE
 {
- earliestCallTimeStamp EarliestCallTimeStamp OPTIONAL,
- latestCallTimeStamp LatestCallTimeStamp OPTIONAL,
- totalChargeValueList TotalChargeValueList OPTIONAL,
- totalTaxRefund TotalTaxRefund OPTIONAL,
- totalTaxValue TotalTaxValue OPTIONAL,
- totalDiscountValue TotalDiscountValue OPTIONAL,
- totalDiscountRefund TotalDiscountRefund OPTIONAL,
- totalAdvisedChargeValueList TotalAdvisedChargeValueList OPTIONAL,
- callEventDetailsCount CallEventDetailsCount OPTIONAL,
- operatorSpecInformation OperatorSpecInfoList OPTIONAL
+    earliestCallTimeStamp    EarliestCallTimeStamp       OPTIONAL,
+    latestCallTimeStamp      LatestCallTimeStamp         OPTIONAL,
+    totalCharge              TotalCharge                 OPTIONAL, -- *m.m.
+    totalChargeRefund        TotalChargeRefund           OPTIONAL,
+    totalTaxRefund           TotalTaxRefund              OPTIONAL,
+    totalTaxValue            TotalTaxValue               OPTIONAL, -- *m.m.
+    totalDiscountValue       TotalDiscountValue          OPTIONAL, -- *m.m.
+    totalDiscountRefund      TotalDiscountRefund         OPTIONAL,
+    totalAdvisedChargeValueList TotalAdvisedChargeValueList OPTIONAL,
+    callEventDetailsCount    CallEventDetailsCount       OPTIONAL, -- *m.m.
+    operatorSpecInformation  OperatorSpecInfoList        OPTIONAL,
+...
 }
 
 
@@ -288,75 +275,48 @@ AdvisedChargeCurrency ::= [APPLICATION 348] Currency
  
 AdvisedChargeInformation ::= [APPLICATION 351] SEQUENCE
 {
- paidIndicator PaidIndicator OPTIONAL,
- paymentMethod PaymentMethod OPTIONAL,
- advisedChargeCurrency AdvisedChargeCurrency OPTIONAL,
- advisedCharge AdvisedCharge OPTIONAL,
- commission Commission OPTIONAL
+    paidIndicator         PaidIndicator         OPTIONAL,
+    paymentMethod         PaymentMethod         OPTIONAL,
+    advisedChargeCurrency AdvisedChargeCurrency OPTIONAL,
+    advisedCharge         AdvisedCharge         OPTIONAL, -- *m.m.
+    commission            Commission            OPTIONAL,
+...
 }
  
 AgeOfLocation ::= [APPLICATION 396] INTEGER
 
-Aiur ::= [APPLICATION 401] INTEGER
-
-AiurRequested ::= [APPLICATION 34] INTEGER
-
-BasicHSCSDParameters ::= [APPLICATION 35] SEQUENCE
-{
- maxNumberOfChannels NumberOfChannels OPTIONAL,
- channelCodingAcceptableList ChannelCodingAcceptableList OPTIONAL,
- channelCodingUsed ChannelCoding OPTIONAL,
- numberOfChannelsUsed NumberOfChannelsUsed OPTIONAL
-}
-
 BasicService ::= [APPLICATION 36] SEQUENCE
 {
- serviceCode BasicServiceCode OPTIONAL,
- radioChannelRequested RadioChannelRequested OPTIONAL,
- radioChannelUsed RadioChannelUsed OPTIONAL,
- speechVersionRequested SpeechVersionRequested OPTIONAL,
- speechVersionUsed SpeechVersionUsed OPTIONAL,
- transparencyIndicator TransparencyIndicator OPTIONAL,
- fnur Fnur OPTIONAL,
- aiurRequested AiurRequested OPTIONAL,
- userProtocolIndicator UserProtocolIndicator OPTIONAL,
- guaranteedBitRate GuaranteedBitRate OPTIONAL,
- maximumBitRate MaximumBitRate OPTIONAL
+    serviceCode                 BasicServiceCode       OPTIONAL, -- *m.m.
+    transparencyIndicator       TransparencyIndicator  OPTIONAL,
+    fnur                        Fnur                   OPTIONAL,
+    userProtocolIndicator       UserProtocolIndicator  OPTIONAL,
+    guaranteedBitRate           GuaranteedBitRate      OPTIONAL,
+    maximumBitRate              MaximumBitRate         OPTIONAL,
+...
 }
 
-BasicServiceCode ::= CHOICE 
+BasicServiceCode ::= [APPLICATION 426] CHOICE 
 {
- teleServiceCode TeleServiceCode,
- bearerServiceCode BearerServiceCode
+    teleServiceCode      TeleServiceCode,
+    bearerServiceCode    BearerServiceCode,
+...
 }
 
 BasicServiceCodeList ::= [APPLICATION 37] SEQUENCE OF BasicServiceCode
 
 BasicServiceUsed ::= [APPLICATION 39] SEQUENCE
 {
- basicService BasicService OPTIONAL,
- chargingTimeStamp ChargingTimeStamp OPTIONAL,
- chargeInformationList ChargeInformationList OPTIONAL,
- dataVolumeReference DataVolumeReference OPTIONAL,
- hSCSDInformation HSCSDInformation OPTIONAL
+    basicService                BasicService          OPTIONAL, -- *m.m.
+    chargingTimeStamp           ChargingTimeStamp     OPTIONAL,
+    chargeInformationList       ChargeInformationList OPTIONAL, -- *m.m.
+    hSCSDIndicator              HSCSDIndicator        OPTIONAL,
+...
 }
 
 BasicServiceUsedList ::= [APPLICATION 38] SEQUENCE OF BasicServiceUsed
 
 BearerServiceCode ::= [APPLICATION 40] HexString --(SIZE(2))
-
-CalledCountryCode ::= [APPLICATION 257] AsciiString
-
-CalledNumAnalysis ::= [APPLICATION 246] SEQUENCE
-{
- calledNumAnalysisCode CalledNumAnalysisCode OPTIONAL,
- countryCodeTable CountryCodeList OPTIONAL,
- iacTable IacList OPTIONAL
-}
-
-CalledNumAnalysisCode ::= [APPLICATION 247] Code
-
-CalledNumAnalysisList ::= [APPLICATION 249] SEQUENCE OF CalledNumAnalysis
 
 CalledNumber ::= [APPLICATION 407] AddressStringDigits
 
@@ -370,20 +330,22 @@ CallEventStartTimeStamp ::= [APPLICATION 44] DateTime
 
 CallingNumber ::= [APPLICATION 405] AddressStringDigits
 
-CallOriginator ::= [APPLICATION 41] SEQUENCE
+CallOriginator ::= [APPLICATION 41]  SEQUENCE
 {
- callingNumber CallingNumber OPTIONAL,
- clirIndicator ClirIndicator OPTIONAL
+    callingNumber               CallingNumber  OPTIONAL,
+    clirIndicator               ClirIndicator         OPTIONAL,
+    sMSOriginator               SMSOriginator         OPTIONAL,
+...
 }
 
 CallReference ::= [APPLICATION 45] OCTET STRING --(SIZE(1..8))
 
 CallTypeGroup ::= [APPLICATION 258] SEQUENCE
 {
- callTypeLevel1 CallTypeLevel1 OPTIONAL,
- callTypeLevel2 CallTypeLevel2 OPTIONAL,
- callTypeLevel3 CallTypeLevel3 OPTIONAL,
- calledCountryCode CalledCountryCode OPTIONAL
+    callTypeLevel1      CallTypeLevel1           OPTIONAL, -- *m.m.
+    callTypeLevel2      CallTypeLevel2           OPTIONAL, -- *m.m.
+    callTypeLevel3      CallTypeLevel3           OPTIONAL, -- *m.m.
+...
 }
 
 CallTypeLevel1 ::= [APPLICATION 259] INTEGER
@@ -392,25 +354,9 @@ CallTypeLevel2 ::= [APPLICATION 255] INTEGER
 
 CallTypeLevel3 ::= [APPLICATION 256] INTEGER
 
-CamelCallReference ::= [APPLICATION 49] SEQUENCE
-{
- mscAddress MscAddress OPTIONAL,
- callReferenceNumber CamelCallReferenceNumber OPTIONAL
-}
-
-CamelCallReferenceNumber ::= [APPLICATION 50] HexString --(SIZE(2..16))
-
-CamelChargeInformation ::= [APPLICATION 408] ChargeInformation
-
 CamelDestinationNumber ::= [APPLICATION 404] AddressStringDigits
 
-CamelInitiatedCFIndicator ::= [APPLICATION 52] INTEGER
-
-CamelModification ::= [APPLICATION 53] INTEGER
-
-CamelModificationList ::= [APPLICATION 54] SEQUENCE OF CamelModification
-
-CamelServerAddress ::= [APPLICATION 399] AddressStringDigits
+CamelInvocationFee ::= [APPLICATION 422] AbsoluteAmount
 
 CamelServiceKey ::= [APPLICATION 55] INTEGER
 
@@ -418,112 +364,111 @@ CamelServiceLevel ::= [APPLICATION 56] INTEGER
 
 CamelServiceUsed ::= [APPLICATION 57] SEQUENCE
 {
- camelServerAddress CamelServerAddress OPTIONAL,
- camelServiceLevel CamelServiceLevel OPTIONAL,
- camelServiceKey CamelServiceKey OPTIONAL,
- defaultCallHandling DefaultCallHandlingIndicator OPTIONAL,
- camelCallReference CamelCallReference OPTIONAL,
- camelChargeInformation CamelChargeInformation OPTIONAL,
- camelInitiatedCFIndicator CamelInitiatedCFIndicator OPTIONAL,
- camelModificationList CamelModificationList OPTIONAL,
- threeGcamelDestination ThreeGcamelDestination OPTIONAL,
- cseInformation CseInformation OPTIONAL
+    camelServiceLevel         CamelServiceLevel          OPTIONAL,
+    camelServiceKey           CamelServiceKey            OPTIONAL, -- *m.m.
+    defaultCallHandling       DefaultCallHandlingIndicator OPTIONAL,
+    exchangeRateCode          ExchangeRateCode             OPTIONAL,
+    taxInformation            TaxInformationList           OPTIONAL,
+    discountInformation       DiscountInformation          OPTIONAL,
+    camelInvocationFee        CamelInvocationFee           OPTIONAL,
+    threeGcamelDestination    ThreeGcamelDestination       OPTIONAL,
+    cseInformation            CseInformation               OPTIONAL,
+...
 }
 
 CauseForTerm ::= [APPLICATION 58] INTEGER
 
 CellId ::= [APPLICATION 59] INTEGER 
 
-ChannelCoding ::= [APPLICATION 60] INTEGER
-
-ChannelCodingAcceptableList ::= [APPLICATION 61] SEQUENCE OF ChannelCoding
-
 Charge ::= [APPLICATION 62] AbsoluteAmount
 
-ChargeableSubscriber ::= CHOICE 
+ChargeableSubscriber ::= [APPLICATION 427] CHOICE 
 {
- simChargeableSubscriber SimChargeableSubscriber,
- minChargeableSubscriber MinChargeableSubscriber
+    simChargeableSubscriber SimChargeableSubscriber,
+    minChargeableSubscriber MinChargeableSubscriber,
+...
 }
 
-ChargeableUnits ::= [APPLICATION 65] INTEGER
+ChargeableUnits ::= [APPLICATION 65]  INTEGER
 
 ChargeDetail ::= [APPLICATION 63] SEQUENCE
 {
- chargeType ChargeType OPTIONAL,
- charge Charge OPTIONAL,
- chargeableUnits ChargeableUnits OPTIONAL,
- chargedUnits ChargedUnits OPTIONAL,
- chargeDetailTimeStamp ChargeDetailTimeStamp OPTIONAL,
- dayCategory DayCategory OPTIONAL,
- dayCategorySubtype DayCategorySubtype OPTIONAL,
- timeBand TimeBand OPTIONAL,
- timeBandSubtype TimeBandSubtype OPTIONAL,
- multiRateIndicator MultiRateIndicator OPTIONAL
+    chargeType              ChargeType         OPTIONAL, -- *m.m.
+    charge                  Charge             OPTIONAL, -- *m.m.
+    chargeableUnits         ChargeableUnits    OPTIONAL,
+    chargedUnits            ChargedUnits       OPTIONAL,
+    chargeDetailTimeStamp   ChargeDetailTimeStamp  OPTIONAL,
+...
 }
 
 ChargeDetailList ::= [APPLICATION 64] SEQUENCE OF ChargeDetail
 
 ChargeDetailTimeStamp ::= [APPLICATION 410] ChargingTimeStamp
 
-ChargedItem ::= [APPLICATION 66] AsciiString --(SIZE(1))
+ChargedItem ::= [APPLICATION 66]  AsciiString --(SIZE(1))
 
 ChargedPartyEquipment ::= [APPLICATION 323] SEQUENCE
 {
- equipmentIdType EquipmentIdType OPTIONAL,
- equipmentId EquipmentId OPTIONAL
+    equipmentIdType EquipmentIdType OPTIONAL, -- *m.m.
+    equipmentId     EquipmentId     OPTIONAL, -- *m.m.
+...
 }
  
 ChargedPartyHomeIdentification ::= [APPLICATION 313] SEQUENCE
 {
- homeIdType HomeIdType OPTIONAL,
- homeIdentifier HomeIdentifier OPTIONAL
+    homeIdType     HomeIdType     OPTIONAL, -- *m.m.
+    homeIdentifier HomeIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 ChargedPartyHomeIdList ::= [APPLICATION 314] SEQUENCE OF
- ChargedPartyHomeIdentification
+                                             ChargedPartyHomeIdentification
 
 ChargedPartyIdentification ::= [APPLICATION 309] SEQUENCE
 {
- chargedPartyIdType ChargedPartyIdType OPTIONAL,
- chargedPartyIdentifier ChargedPartyIdentifier OPTIONAL
+    chargedPartyIdType         ChargedPartyIdType         OPTIONAL, -- *m.m.
+    chargedPartyIdentifier     ChargedPartyIdentifier     OPTIONAL, -- *m.m.
+...
 }
 
 ChargedPartyIdentifier ::= [APPLICATION 287] AsciiString
 
 ChargedPartyIdList ::= [APPLICATION 310] SEQUENCE OF 
- ChargedPartyIdentification
+                                         ChargedPartyIdentification
 
 ChargedPartyIdType ::= [APPLICATION 305] INTEGER
 
 ChargedPartyInformation ::= [APPLICATION 324] SEQUENCE
 {
- chargedPartyIdList ChargedPartyIdList OPTIONAL,
- chargedPartyHomeIdList ChargedPartyHomeIdList OPTIONAL,
- chargedPartyLocationList ChargedPartyLocationList OPTIONAL,
- chargedPartyEquipment ChargedPartyEquipment OPTIONAL
+    chargedPartyIdList       ChargedPartyIdList        OPTIONAL, -- *m.m.
+    chargedPartyHomeIdList   ChargedPartyHomeIdList    OPTIONAL,
+    chargedPartyLocationList ChargedPartyLocationList  OPTIONAL,
+    chargedPartyEquipment    ChargedPartyEquipment     OPTIONAL,
+...
 }
  
 ChargedPartyLocation ::= [APPLICATION 320] SEQUENCE
 {
- locationIdType LocationIdType OPTIONAL,
- locationIdentifier LocationIdentifier OPTIONAL
+    locationIdType     LocationIdType     OPTIONAL, -- *m.m.
+    locationIdentifier LocationIdentifier OPTIONAL, -- *m.m.
+...
 }
  
 ChargedPartyLocationList ::= [APPLICATION 321] SEQUENCE OF ChargedPartyLocation
  
 ChargedPartyStatus ::= [APPLICATION 67] INTEGER 
 
-ChargedUnits ::= [APPLICATION 68] INTEGER 
+ChargedUnits ::= [APPLICATION 68]  INTEGER 
 
 ChargeInformation ::= [APPLICATION 69] SEQUENCE
 {
- chargedItem ChargedItem OPTIONAL,
- exchangeRateCode ExchangeRateCode OPTIONAL,
- callTypeGroup CallTypeGroup OPTIONAL,
- chargeDetailList ChargeDetailList OPTIONAL,
- taxInformation TaxInformationList OPTIONAL,
- discountInformation DiscountInformation OPTIONAL
+    chargedItem         ChargedItem         OPTIONAL, -- *m.m.
+    exchangeRateCode    ExchangeRateCode    OPTIONAL,
+    callTypeGroup       CallTypeGroup       OPTIONAL,
+    chargeDetailList    ChargeDetailList    OPTIONAL, -- *m.m.
+    taxInformation      TaxInformationList  OPTIONAL,
+    discountInformation DiscountInformation OPTIONAL,
+...
 }
 
 ChargeInformationList ::= [APPLICATION 70] SEQUENCE OF ChargeInformation
@@ -532,13 +477,11 @@ ChargeRefundIndicator ::= [APPLICATION 344] INTEGER
  
 ChargeType ::= [APPLICATION 71] NumberString --(SIZE(2..3))
 
-ChargingCharacteristics ::= [APPLICATION 263] OCTET STRING --(SIZE(1))
-
 ChargingId ::= [APPLICATION 72] INTEGER
 
-ChargingPoint ::= [APPLICATION 73] AsciiString --(SIZE(1))
+ChargingPoint ::= [APPLICATION 73]  AsciiString --(SIZE(1))
 
-ChargingTimeStamp ::= [APPLICATION 74] DateTime
+ChargingTimeStamp ::= [APPLICATION 74]  DateTime
 
 ClirIndicator ::= [APPLICATION 75] INTEGER
 
@@ -550,8 +493,9 @@ ContentChargingPoint ::= [APPLICATION 345] INTEGER
  
 ContentProvider ::= [APPLICATION 327] SEQUENCE
 {
- contentProviderIdType ContentProviderIdType OPTIONAL,
- contentProviderIdentifier ContentProviderIdentifier OPTIONAL
+    contentProviderIdType     ContentProviderIdType     OPTIONAL, -- *m.m.
+    contentProviderIdentifier ContentProviderIdentifier OPTIONAL, -- *m.m.
+...
 }
  
 ContentProviderIdentifier ::= [APPLICATION 292] AsciiString
@@ -564,51 +508,49 @@ ContentProviderName ::= [APPLICATION 334] AsciiString
  
 ContentServiceUsed ::= [APPLICATION 352] SEQUENCE
 {
- contentTransactionCode ContentTransactionCode OPTIONAL,
- contentTransactionType ContentTransactionType OPTIONAL,
- objectType ObjectType OPTIONAL,
- transactionDescriptionSupp TransactionDescriptionSupp OPTIONAL,
- transactionShortDescription TransactionShortDescription OPTIONAL, 
- transactionDetailDescription TransactionDetailDescription OPTIONAL,
- transactionIdentifier TransactionIdentifier OPTIONAL,
- transactionAuthCode TransactionAuthCode OPTIONAL,
- dataVolumeIncoming DataVolumeIncoming OPTIONAL,
- dataVolumeOutgoing DataVolumeOutgoing OPTIONAL,
- totalDataVolume TotalDataVolume OPTIONAL,
- chargeRefundIndicator ChargeRefundIndicator OPTIONAL,
- contentChargingPoint ContentChargingPoint OPTIONAL,
- chargeInformationList ChargeInformationList OPTIONAL,
- advisedChargeInformation AdvisedChargeInformation OPTIONAL
+  contentTransactionCode    ContentTransactionCode       OPTIONAL, -- *m.m.
+  contentTransactionType    ContentTransactionType       OPTIONAL, -- *m.m.
+  objectType                  ObjectType                   OPTIONAL,
+  transactionDescriptionSupp  TransactionDescriptionSupp  OPTIONAL,
+  transactionShortDescription TransactionShortDescription OPTIONAL, -- *m.m. 
+    transactionDetailDescription TransactionDetailDescription OPTIONAL,
+    transactionIdentifier   TransactionIdentifier        OPTIONAL, -- *m.m.
+    transactionAuthCode          TransactionAuthCode          OPTIONAL,
+    dataVolumeIncoming           DataVolumeIncoming           OPTIONAL,
+    dataVolumeOutgoing           DataVolumeOutgoing           OPTIONAL,
+    totalDataVolume              TotalDataVolume              OPTIONAL,
+    chargeRefundIndicator        ChargeRefundIndicator        OPTIONAL,
+    contentChargingPoint         ContentChargingPoint         OPTIONAL,
+    chargeInformationList        ChargeInformationList        OPTIONAL,
+    advisedChargeInformation     AdvisedChargeInformation     OPTIONAL,
+...
 }
 
 ContentServiceUsedList ::= [APPLICATION 285] SEQUENCE OF ContentServiceUsed
  
 ContentTransactionBasicInfo ::= [APPLICATION 304] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- orderPlacedTimeStamp OrderPlacedTimeStamp OPTIONAL,
- requestedDeliveryTimeStamp RequestedDeliveryTimeStamp OPTIONAL,
- actualDeliveryTimeStamp ActualDeliveryTimeStamp OPTIONAL,
- totalTransactionDuration TotalTransactionDuration OPTIONAL,
- transactionStatus TransactionStatus OPTIONAL
+    rapFileSequenceNumber      RapFileSequenceNumber      OPTIONAL,
+    orderPlacedTimeStamp       OrderPlacedTimeStamp       OPTIONAL,
+    requestedDeliveryTimeStamp RequestedDeliveryTimeStamp OPTIONAL,
+    actualDeliveryTimeStamp    ActualDeliveryTimeStamp    OPTIONAL,
+    totalTransactionDuration   TotalTransactionDuration     OPTIONAL,
+    transactionStatus          TransactionStatus          OPTIONAL,
+...
 }
 
 ContentTransactionCode ::= [APPLICATION 336] INTEGER
  
 ContentTransactionType ::= [APPLICATION 337] INTEGER
  
-CountryCode ::= [APPLICATION 77] NumberString
-
-CountryCodeList ::= [APPLICATION 78] SEQUENCE OF CountryCode
-
 CseInformation ::= [APPLICATION 79] OCTET STRING --(SIZE(1..40))
 
 CurrencyConversion ::= [APPLICATION 106] SEQUENCE
 {
- exchangeRateCode ExchangeRateCode OPTIONAL,
- numberOfDecimalPlaces NumberOfDecimalPlaces OPTIONAL,
- exchangeRate ExchangeRate OPTIONAL
+    exchangeRateCode      ExchangeRateCode      OPTIONAL, -- *m.m.
+    numberOfDecimalPlaces NumberOfDecimalPlaces OPTIONAL, -- *m.m.
+    exchangeRate          ExchangeRate          OPTIONAL, -- *m.m.
+...
 }
 
 CurrencyConversionList ::= [APPLICATION 80] SEQUENCE OF CurrencyConversion
@@ -623,17 +565,15 @@ DataVolumeIncoming ::= [APPLICATION 250] DataVolume
 
 DataVolumeOutgoing ::= [APPLICATION 251] DataVolume
 
-DataVolumeReference ::= [APPLICATION 82] INTEGER 
-
 --
--- The following datatypes are used to denote timestamps.
--- Each timestamp consists of a local timestamp and a
--- corresponding UTC time offset. 
--- Except for the timestamps used within the Batch Control 
--- Information and the Audit Control Information 
--- the UTC time offset is identified by a code referencing
--- the UtcTimeOffsetInfo.
--- 
+--  The following datatypes are used to denote timestamps.
+--  Each timestamp consists of a local timestamp and a
+--  corresponding UTC time offset. 
+--  Except for the timestamps used within the Batch Control 
+--  Information and the Audit Control Information 
+--  the UTC time offset is identified by a code referencing
+--  the UtcTimeOffsetInfo.
+--  
  
 --
 -- We start with the "short" datatype referencing the 
@@ -642,21 +582,22 @@ DataVolumeReference ::= [APPLICATION 82] INTEGER
 
 DateTime ::= SEQUENCE 
 {
- -- 
- -- Local timestamps are noted in the format
- --
- -- CCYYMMDDhhmmss
- --
- -- where CC = century ('19', '20',...)
- -- YY = year ('00' - '99')
- -- MM = month ('01', '02', ... , '12')
- -- DD = day ('01', '02', ... , '31')
- -- hh = hour ('00', '01', ... , '24')
- -- mm = minutes ('00', '01', ... , '59')
- -- ss = seconds ('00', '01', ... , '59')
- -- 
- localTimeStamp LocalTimeStamp OPTIONAL,
- utcTimeOffsetCode UtcTimeOffsetCode OPTIONAL
+     -- 
+     -- Local timestamps are noted in the format
+     --
+     --     CCYYMMDDhhmmss
+     --
+     -- where CC  =  century  ('19', '20',...)
+     --       YY  =  year     ('00' - '99')
+     --       MM  =  month    ('01', '02', ... , '12')
+     --       DD  =  day      ('01', '02', ... , '31')
+     --       hh  =  hour     ('00', '01', ... , '24')
+     --       mm  =  minutes  ('00', '01', ... , '59')
+     --       ss  =  seconds  ('00', '01', ... , '59')
+     -- 
+    localTimeStamp     LocalTimeStamp    OPTIONAL, -- *m.m.
+    utcTimeOffsetCode  UtcTimeOffsetCode OPTIONAL, -- *m.m.
+...
 }
 
 --
@@ -666,13 +607,10 @@ DateTime ::= SEQUENCE
 
 DateTimeLong ::= SEQUENCE 
 {
- localTimeStamp LocalTimeStamp OPTIONAL,
- utcTimeOffset UtcTimeOffset OPTIONAL
+    localTimeStamp     LocalTimeStamp OPTIONAL, -- *m.m.
+    utcTimeOffset      UtcTimeOffset  OPTIONAL, -- *m.m.
+...
 }
-
-DayCategory ::= [APPLICATION 85] AsciiString --(SIZE(1))
-
-DayCategorySubtype ::= [APPLICATION 86] AsciiString --(SIZE(1))
 
 DefaultCallHandlingIndicator ::= [APPLICATION 87] INTEGER
 
@@ -680,12 +618,12 @@ DepositTimeStamp ::= [APPLICATION 88] DateTime
 
 Destination ::= [APPLICATION 89] SEQUENCE
 {
- calledNumber CalledNumber OPTIONAL,
- dialledDigits DialledDigits OPTIONAL,
- calledPlace CalledPlace OPTIONAL,
- calledRegion CalledRegion OPTIONAL,
- calledNumAnalysisCode CalledNumAnalysisCode OPTIONAL,
- sMSDestinationNumber SMSDestinationNumber OPTIONAL
+    calledNumber                CalledNumber  OPTIONAL,
+    dialledDigits               DialledDigits         OPTIONAL,
+    calledPlace                 CalledPlace           OPTIONAL,
+    calledRegion                CalledRegion          OPTIONAL,
+    sMSDestinationNumber        SMSDestinationNumber  OPTIONAL,
+...
 }
 
 DestinationNetwork ::= [APPLICATION 90] NetworkId 
@@ -694,27 +632,33 @@ DialledDigits ::= [APPLICATION 279] AsciiString
 
 Discount ::= [APPLICATION 412] DiscountValue
 
-DiscountApplied ::= CHOICE 
+DiscountableAmount ::= [APPLICATION 423] AbsoluteAmount
+
+DiscountApplied ::= [APPLICATION 428] CHOICE 
 {
- fixedDiscountValue FixedDiscountValue, 
- discountRate DiscountRate
+    fixedDiscountValue    FixedDiscountValue, 
+    discountRate          DiscountRate,
+...
 }
 
 DiscountCode ::= [APPLICATION 91] INTEGER
 
 DiscountInformation ::= [APPLICATION 96] SEQUENCE
 {
- discountCode DiscountCode OPTIONAL,
- discount Discount OPTIONAL
+    discountCode        DiscountCode  OPTIONAL, -- *m.m.
+    discount            Discount      OPTIONAL,
+    discountableAmount  DiscountableAmount  OPTIONAL,
+...
 }
 
 Discounting ::= [APPLICATION 94] SEQUENCE
 {
- discountCode DiscountCode OPTIONAL,
- discountApplied DiscountApplied OPTIONAL
+    discountCode    DiscountCode    OPTIONAL, -- *m.m.
+    discountApplied DiscountApplied OPTIONAL, -- *m.m.
+...
 }
 
-DiscountingList ::= [APPLICATION 95] SEQUENCE OF Discounting
+DiscountingList ::= [APPLICATION 95]  SEQUENCE OF Discounting
 
 DiscountRate ::= [APPLICATION 92] PercentageRate
 
@@ -722,27 +666,11 @@ DiscountValue ::= AbsoluteAmount
 
 DistanceChargeBandCode ::= [APPLICATION 98] AsciiString --(SIZE(1))
 
-DualBearerServiceCode ::= [APPLICATION 99] HexString --(SIZE(2))
-
-DualServiceCode ::= CHOICE
-{
- dualTeleServiceCode DualTeleServiceCode,
- dualBearerServiceCode DualBearerServiceCode
-}
-
-DualTeleServiceCode ::= [APPLICATION 100] HexString --(SIZE(2))
-
 EarliestCallTimeStamp ::= [APPLICATION 101] DateTimeLong
 
 EquipmentId ::= [APPLICATION 290] AsciiString
 
 EquipmentIdType ::= [APPLICATION 322] INTEGER
-
-EquipmentInformation ::= [APPLICATION 102] SEQUENCE
-{ 
- mobileStationClassMark MobileStationClassMark OPTIONAL,
- imeiOrEsn ImeiOrEsn OPTIONAL
-}
 
 Esn ::= [APPLICATION 103] NumberString
 
@@ -762,110 +690,79 @@ FixedDiscountValue ::= [APPLICATION 411] DiscountValue
 
 Fnur ::= [APPLICATION 111] INTEGER
 
-FraudMonitorIndicator ::= [APPLICATION 112] AsciiString --(SIZE(1))
-
-GeographicalLocation ::= [APPLICATION 113] SEQUENCE
+GeographicalLocation ::= [APPLICATION 113]  SEQUENCE
 {
- servingNetwork ServingNetwork OPTIONAL,
- servingBid ServingBid OPTIONAL,
- servingLocationDescription ServingLocationDescription OPTIONAL,
- longitude Longitude OPTIONAL,
- latitude Latitude OPTIONAL
+    servingNetwork              ServingNetwork       OPTIONAL,
+    servingBid                  ServingBid           OPTIONAL,
+    servingLocationDescription  ServingLocationDescription  OPTIONAL,
+...
 }
-
-GmlcAddress ::= [APPLICATION 296] AsciiString
 
 GprsBasicCallInformation ::= [APPLICATION 114] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- gprsChargeableSubscriber GprsChargeableSubscriber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- gprsDestination GprsDestination OPTIONAL,
- callEventStartTimeStamp CallEventStartTimeStamp OPTIONAL,
- totalCallEventDuration TotalCallEventDuration OPTIONAL,
- causeForTerm CauseForTerm OPTIONAL,
- partialTypeIndicator PartialTypeIndicator OPTIONAL,
- pDPContextStartTimestamp PDPContextStartTimestamp OPTIONAL,
- networkInitPDPContext NetworkInitPDPContext OPTIONAL,
- chargingId ChargingId OPTIONAL
+    gprsChargeableSubscriber    GprsChargeableSubscriber OPTIONAL, -- *m.m.
+    rapFileSequenceNumber       RapFileSequenceNumber    OPTIONAL,
+    gprsDestination             GprsDestination          OPTIONAL, -- *m.m.
+    callEventStartTimeStamp     CallEventStartTimeStamp  OPTIONAL, -- *m.m.
+    totalCallEventDuration      TotalCallEventDuration   OPTIONAL, -- *m.m.
+    causeForTerm                CauseForTerm             OPTIONAL,
+    partialTypeIndicator        PartialTypeIndicator     OPTIONAL,
+    pDPContextStartTimestamp    PDPContextStartTimestamp OPTIONAL,
+    networkInitPDPContext       NetworkInitPDPContext    OPTIONAL,
+    chargingId                  ChargingId               OPTIONAL, -- *m.m.
+...
 }
 
 GprsChargeableSubscriber ::= [APPLICATION 115] SEQUENCE
 {
- chargeableSubscriber ChargeableSubscriber OPTIONAL,
- pdpType PdpType OPTIONAL,
- pdpAddress PdpAddress OPTIONAL,
- chargingCharacteristics ChargingCharacteristics OPTIONAL,
- networkAccessIdentifier NetworkAccessIdentifier OPTIONAL
+    chargeableSubscriber        ChargeableSubscriber    OPTIONAL,
+    pdpAddress                  PdpAddress              OPTIONAL,
+    networkAccessIdentifier     NetworkAccessIdentifier OPTIONAL,
+...
 }
 
 GprsDestination ::= [APPLICATION 116] SEQUENCE
 {
- accessPointNameNI AccessPointNameNI OPTIONAL,
- accessPointNameOI AccessPointNameOI OPTIONAL,
- remotePdpAddressList RemotePdpAddressList OPTIONAL
+    accessPointNameNI           AccessPointNameNI      OPTIONAL, -- *m.m.
+    accessPointNameOI           AccessPointNameOI      OPTIONAL,
+...
 }
 
 GprsLocationInformation ::= [APPLICATION 117] SEQUENCE
 {
- gprsNetworkLocation GprsNetworkLocation OPTIONAL,
- homeLocationInformation HomeLocationInformation OPTIONAL,
- geographicalLocation GeographicalLocation OPTIONAL 
+    gprsNetworkLocation         GprsNetworkLocation     OPTIONAL, -- *m.m.
+    homeLocationInformation     HomeLocationInformation OPTIONAL,
+    geographicalLocation        GeographicalLocation    OPTIONAL, 
+...
 } 
 
 GprsNetworkLocation ::= [APPLICATION 118] SEQUENCE
 {
- recEntity RecEntityCodeList OPTIONAL,
- locationArea LocationArea OPTIONAL,
- cellId CellId OPTIONAL
+    recEntity                   RecEntityCodeList OPTIONAL, -- *m.m.
+    locationArea                LocationArea      OPTIONAL,
+    cellId                      CellId            OPTIONAL,
+...
 }
 
-GprsServiceUsage ::= [APPLICATION 119] SEQUENCE
+GprsServiceUsed ::= [APPLICATION 121]  SEQUENCE
 {
- gprsUsageTimeStamp GprsUsageTimeStamp OPTIONAL,
- qosRequested QoSRequested OPTIONAL,
- qosUsed QoSUsed OPTIONAL,
- dataVolumeIncoming DataVolumeIncoming OPTIONAL,
- dataVolumeOutgoing DataVolumeOutgoing OPTIONAL
+    iMSSignallingContext        IMSSignallingContext  OPTIONAL,
+    dataVolumeIncoming          DataVolumeIncoming    OPTIONAL, -- *m.m.
+    dataVolumeOutgoing          DataVolumeOutgoing    OPTIONAL, -- *m.m.
+    chargeInformationList       ChargeInformationList OPTIONAL, -- *m.m.
+...
 }
-
-GprsServiceUsageList ::= [APPLICATION 120] SEQUENCE OF GprsServiceUsage
-
-GprsServiceUsed ::= [APPLICATION 121] SEQUENCE
-{
- iMSSignallingContext IMSSignallingContext OPTIONAL,
- gprsServiceUsageList GprsServiceUsageList OPTIONAL,
- chargingTimeStamp ChargingTimeStamp OPTIONAL,
- chargeInformationList ChargeInformationList OPTIONAL
-}
-
-GprsUsageTimeStamp ::= [APPLICATION 409] ChargingTimeStamp
 
 GsmChargeableSubscriber ::= [APPLICATION 286] SEQUENCE
 {
- imsi Imsi OPTIONAL,
- msisdn Msisdn OPTIONAL
+    imsi     Imsi   OPTIONAL,
+    msisdn   Msisdn OPTIONAL,
+...
 }
-
-GSMQoSInformation ::= SEQUENCE
-{
- delay QoSDelay OPTIONAL,
- meanThroughput QoSMeanThroughput OPTIONAL,
- peakThroughput QoSPeakThroughput OPTIONAL,
- precedence QoSPrecedence OPTIONAL,
- reliability QoSReliability OPTIONAL
-}
-
-GSMQoSRequested ::= [APPLICATION 272] GSMQoSInformation
-
-GSMQoSUsed ::= [APPLICATION 273] GSMQoSInformation
-
-GsnAddress ::= IpAddress
 
 GuaranteedBitRate ::= [APPLICATION 420] OCTET STRING -- (SIZE (1))
 
-HomeBid ::= [APPLICATION 122] Bid
+HomeBid ::= [APPLICATION 122]  Bid
 
 HomeIdentifier ::= [APPLICATION 288] AsciiString
 
@@ -875,72 +772,38 @@ HomeLocationDescription ::= [APPLICATION 413] LocationDescription
 
 HomeLocationInformation ::= [APPLICATION 123] SEQUENCE
 {
- homeBid HomeBid OPTIONAL,
- homeLocationDescription HomeLocationDescription OPTIONAL
+    homeBid                     HomeBid             OPTIONAL, -- *m.m.
+    homeLocationDescription     HomeLocationDescription OPTIONAL, -- *m.m.
+...
 }
 
 HorizontalAccuracyDelivered ::= [APPLICATION 392] INTEGER
 
 HorizontalAccuracyRequested ::= [APPLICATION 385] INTEGER
 
-HSCSDInformation ::= [APPLICATION 124] SEQUENCE
-{
- basicHSCSDParameters BasicHSCSDParameters OPTIONAL,
- hSCSDParameterModificationList HSCSDParameterModificationList OPTIONAL
-}
-
-
-HSCSDParameterModification ::= [APPLICATION 125] SEQUENCE
-{
- aiur Aiur OPTIONAL,
- maxNumberOfChannels NumberOfChannels OPTIONAL,
- channelCodingUsed ChannelCoding OPTIONAL,
- numberOfChannelsUsed NumberOfChannelsUsed OPTIONAL,
- initiatingParty InitiatingParty OPTIONAL,
- modificationTimestamp ModificationTimestamp OPTIONAL
-}
-
-HSCSDParameterModificationList ::= [APPLICATION 140] SEQUENCE OF HSCSDParameterModification
-
-Iac ::= [APPLICATION 126] NumberString
-
-IacList ::= [APPLICATION 127] SEQUENCE OF Iac
+HSCSDIndicator ::= [APPLICATION 424] AsciiString --(SIZE(1))
 
 Imei ::= [APPLICATION 128] BCDString --(SIZE(7..8))
 
-ImeiOrEsn ::= CHOICE 
+ImeiOrEsn ::= [APPLICATION 429] CHOICE 
 {
- imei Imei,
- esn Esn
+    imei  Imei,
+    esn   Esn,
+...
 } 
 
 Imsi ::= [APPLICATION 129] BCDString --(SIZE(3..8))
 
 IMSSignallingContext ::= [APPLICATION 418] INTEGER
 
-InitiatingParty ::= [APPLICATION 130] INTEGER
-
 InternetServiceProvider ::= [APPLICATION 329] SEQUENCE
 {
- ispIdType IspIdType OPTIONAL,
- ispIdentifier IspIdentifier OPTIONAL
+    ispIdType        IspIdType        OPTIONAL, -- *m.m.
+    ispIdentifier    IspIdentifier    OPTIONAL, -- *m.m.
+...
 }
  
 InternetServiceProviderIdList ::= [APPLICATION 330] SEQUENCE OF InternetServiceProvider
-
-IpAddress ::= CHOICE
-{
- -- IP4 address as x.x.x.x, where 'x's represent the decimal values
- -- of the four 8-bit segment
- -- IP6 address as x:x:x:x:x:x:x:x, where 'x's represent the
- -- hexadecimal values of the eight 16-bit segments
- iPTextV4Address IPTextV4Address,
- iPTextV6Address IPTextV6Address
-}
-
-IPTextV4Address ::= [APPLICATION 131] AsciiString --(SIZE(7..15))
-
-IPTextV6Address ::= [APPLICATION 132] AsciiString --(SIZE(15..39))
 
 IspIdentifier ::= [APPLICATION 294] AsciiString
  
@@ -954,53 +817,56 @@ NetworkIdentifier ::= [APPLICATION 295] AsciiString
 
 Network ::= [APPLICATION 332] SEQUENCE
 {
- networkIdType NetworkIdType OPTIONAL,
- networkIdentifier NetworkIdentifier OPTIONAL
+    networkIdType     NetworkIdType     OPTIONAL, -- *m.m.
+    networkIdentifier NetworkIdentifier OPTIONAL, -- *m.m.
+...
 }
  
 NetworkList ::= [APPLICATION 333] SEQUENCE OF Network
  
 LatestCallTimeStamp ::= [APPLICATION 133] DateTimeLong
 
-Latitude ::= [APPLICATION 134] INTEGER 
-
 LCSQosDelivered ::= [APPLICATION 390] SEQUENCE
 {
- lCSTransactionStatus LCSTransactionStatus OPTIONAL,
- horizontalAccuracyDelivered HorizontalAccuracyDelivered OPTIONAL,
- verticalAccuracyDelivered VerticalAccuracyDelivered OPTIONAL,
- responseTime ResponseTime OPTIONAL,
- positioningMethod PositioningMethod OPTIONAL,
- trackingPeriod TrackingPeriod OPTIONAL,
- trackingFrequency TrackingFrequency OPTIONAL,
- ageOfLocation AgeOfLocation OPTIONAL
+    lCSTransactionStatus          LCSTransactionStatus        OPTIONAL,
+    horizontalAccuracyDelivered   HorizontalAccuracyDelivered OPTIONAL,
+    verticalAccuracyDelivered     VerticalAccuracyDelivered   OPTIONAL,
+    responseTime                  ResponseTime                OPTIONAL,
+    positioningMethod             PositioningMethod           OPTIONAL,
+    trackingPeriod                TrackingPeriod              OPTIONAL,
+    trackingFrequency             TrackingFrequency           OPTIONAL,
+    ageOfLocation                 AgeOfLocation               OPTIONAL,
+...
 }
 
 LCSQosRequested ::= [APPLICATION 383] SEQUENCE
 {
- lCSRequestTimestamp LCSRequestTimestamp OPTIONAL,
- horizontalAccuracyRequested HorizontalAccuracyRequested OPTIONAL,
- verticalAccuracyRequested VerticalAccuracyRequested OPTIONAL,
- responseTimeCategory ResponseTimeCategory OPTIONAL,
- trackingPeriod TrackingPeriod OPTIONAL,
- trackingFrequency TrackingFrequency OPTIONAL
+    lCSRequestTimestamp           LCSRequestTimestamp         OPTIONAL, -- *m.m.
+    horizontalAccuracyRequested   HorizontalAccuracyRequested OPTIONAL,
+    verticalAccuracyRequested     VerticalAccuracyRequested   OPTIONAL,
+    responseTimeCategory          ResponseTimeCategory        OPTIONAL,
+    trackingPeriod                TrackingPeriod              OPTIONAL,
+    trackingFrequency             TrackingFrequency           OPTIONAL,
+...
 }
 
 LCSRequestTimestamp ::= [APPLICATION 384] DateTime
 
 LCSSPIdentification ::= [APPLICATION 375] SEQUENCE
 {
- contentProviderIdType ContentProviderIdType OPTIONAL,
- contentProviderIdentifier ContentProviderIdentifier OPTIONAL
+ contentProviderIdType         ContentProviderIdType     OPTIONAL, -- *m.m.
+ contentProviderIdentifier     ContentProviderIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 LCSSPIdentificationList ::= [APPLICATION 374] SEQUENCE OF LCSSPIdentification
 
 LCSSPInformation ::= [APPLICATION 373] SEQUENCE
 {
- lCSSPIdentificationList LCSSPIdentificationList OPTIONAL,
- iSPList ISPList OPTIONAL,
- networkList NetworkList OPTIONAL
+    lCSSPIdentificationList       LCSSPIdentificationList OPTIONAL, -- *m.m.
+    iSPList                       ISPList                 OPTIONAL,
+    networkList                   NetworkList             OPTIONAL,
+...
 }
 
 LCSTransactionStatus ::= [APPLICATION 391] INTEGER
@@ -1017,22 +883,22 @@ LocationIdentifier ::= [APPLICATION 289] AsciiString
 
 LocationIdType ::= [APPLICATION 315] INTEGER
 
-LocationInformation ::= [APPLICATION 138] SEQUENCE
+LocationInformation ::= [APPLICATION 138]  SEQUENCE
 {
- networkLocation NetworkLocation OPTIONAL,
- homeLocationInformation HomeLocationInformation OPTIONAL,
- geographicalLocation GeographicalLocation OPTIONAL
+    networkLocation             NetworkLocation         OPTIONAL, -- *m.m.
+    homeLocationInformation     HomeLocationInformation OPTIONAL,
+    geographicalLocation        GeographicalLocation    OPTIONAL,
+...
 } 
 
 LocationServiceUsage ::= [APPLICATION 382] SEQUENCE
 {
- lCSQosRequested LCSQosRequested OPTIONAL,
- lCSQosDelivered LCSQosDelivered OPTIONAL,
- chargingTimeStamp ChargingTimeStamp OPTIONAL,
- chargeInformationList ChargeInformationList OPTIONAL
+    lCSQosRequested               LCSQosRequested       OPTIONAL, -- *m.m.
+    lCSQosDelivered               LCSQosDelivered       OPTIONAL,
+    chargingTimeStamp             ChargingTimeStamp     OPTIONAL,
+    chargeInformationList         ChargeInformationList OPTIONAL, -- *m.m.
+...
 }
-
-Longitude ::= [APPLICATION 139] INTEGER 
 
 MaximumBitRate ::= [APPLICATION 421] OCTET STRING -- (SIZE (1))
 
@@ -1044,8 +910,9 @@ MessageDescriptionCode ::= [APPLICATION 141] Code
 
 MessageDescriptionInformation ::= [APPLICATION 143] SEQUENCE
 {
- messageDescriptionCode MessageDescriptionCode OPTIONAL,
- messageDescription MessageDescription OPTIONAL
+    messageDescriptionCode MessageDescriptionCode OPTIONAL, -- *m.m.
+    messageDescription     MessageDescription     OPTIONAL, -- *m.m.
+...
 }
 
 MessageStatus ::= [APPLICATION 144] INTEGER
@@ -1056,77 +923,55 @@ Min ::= [APPLICATION 146] NumberString --(SIZE(2..15))
 
 MinChargeableSubscriber ::= [APPLICATION 254] SEQUENCE
 {
- min Min OPTIONAL,
- mdn Mdn OPTIONAL
+    min     Min    OPTIONAL, -- *m.m.
+    mdn     Mdn    OPTIONAL,
+...
 }
 
 MoBasicCallInformation ::= [APPLICATION 147] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- chargeableSubscriber ChargeableSubscriber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- destination Destination OPTIONAL,
- destinationNetwork DestinationNetwork OPTIONAL,
- callEventStartTimeStamp CallEventStartTimeStamp OPTIONAL,
- totalCallEventDuration TotalCallEventDuration OPTIONAL,
- simToolkitIndicator SimToolkitIndicator OPTIONAL,
- causeForTerm CauseForTerm OPTIONAL
+    chargeableSubscriber        ChargeableSubscriber    OPTIONAL, -- *m.m.
+    rapFileSequenceNumber       RapFileSequenceNumber   OPTIONAL,
+    destination                 Destination             OPTIONAL,
+    destinationNetwork          DestinationNetwork      OPTIONAL,
+    callEventStartTimeStamp     CallEventStartTimeStamp OPTIONAL, -- *m.m.
+    totalCallEventDuration      TotalCallEventDuration  OPTIONAL, -- *m.m.
+    simToolkitIndicator         SimToolkitIndicator     OPTIONAL,
+    causeForTerm                CauseForTerm            OPTIONAL,
+...
 }
-
-MobileStationClassMark ::= [APPLICATION 148] INTEGER
-
-ModificationTimestamp ::= [APPLICATION 150] DateTime
-
-MscAddress ::= [APPLICATION 406] AddressStringDigits
-
-MscId ::= [APPLICATION 151] AsciiString --(SIZE(1..15))
 
 Msisdn ::= [APPLICATION 152] BCDString --(SIZE(1..8))
 
 MtBasicCallInformation ::= [APPLICATION 153] SEQUENCE
 {
- fraudMonitorIndicator FraudMonitorIndicator OPTIONAL,
- chargeableSubscriber ChargeableSubscriber OPTIONAL,
- rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
- networkType NetworkType OPTIONAL,
- callOriginator CallOriginator OPTIONAL,
- originatingNetwork OriginatingNetwork OPTIONAL,
- callEventStartTimeStamp CallEventStartTimeStamp OPTIONAL,
- totalCallEventDuration TotalCallEventDuration OPTIONAL,
- simToolkitIndicator SimToolkitIndicator OPTIONAL,
- causeForTerm CauseForTerm OPTIONAL
+    chargeableSubscriber        ChargeableSubscriber    OPTIONAL, -- *m.m.
+    rapFileSequenceNumber       RapFileSequenceNumber   OPTIONAL,
+    callOriginator              CallOriginator          OPTIONAL,
+    originatingNetwork          OriginatingNetwork      OPTIONAL,
+    callEventStartTimeStamp     CallEventStartTimeStamp OPTIONAL, -- *m.m.
+    totalCallEventDuration      TotalCallEventDuration  OPTIONAL, -- *m.m.
+    simToolkitIndicator         SimToolkitIndicator     OPTIONAL,
+    causeForTerm                CauseForTerm            OPTIONAL,
+...
 }
 
-MultiRateIndicator ::= [APPLICATION 154] INTEGER
- 
 NetworkAccessIdentifier ::= [APPLICATION 417] AsciiString
 
 NetworkId ::= AsciiString --(SIZE(1..6))
 
 NetworkInitPDPContext ::= [APPLICATION 245] INTEGER
 
-NetworkLocation ::= [APPLICATION 156] SEQUENCE
+NetworkLocation ::= [APPLICATION 156]  SEQUENCE
 {
- recEntityCode RecEntityCode OPTIONAL,
- callReference CallReference OPTIONAL,
- locationArea LocationArea OPTIONAL,
- cellId CellId OPTIONAL
+    recEntityCode               RecEntityCode OPTIONAL, -- *m.m.
+    callReference               CallReference OPTIONAL,
+    locationArea                LocationArea  OPTIONAL,
+    cellId                      CellId        OPTIONAL,
+...
 }
-
-NetworkType ::= [APPLICATION 157] INTEGER 
 
 NonChargedNumber ::= [APPLICATION 402] AsciiString
-
-NonChargedParty ::= [APPLICATION 158] SEQUENCE
-{
- nonChargedNumber NonChargedNumber OPTIONAL,
- calledNumAnalysisCode CalledNumAnalysisCode OPTIONAL
-}
-
-NumberOfChannels ::= [APPLICATION 161] INTEGER
-
-NumberOfChannelsUsed ::= [APPLICATION 252] INTEGER
 
 NumberOfDecimalPlaces ::= [APPLICATION 159] INTEGER
 
@@ -1144,7 +989,7 @@ PacketDataProtocolAddress ::= [APPLICATION 165] AsciiString
 
 PaidIndicator ::= [APPLICATION 346] INTEGER
  
-PartialTypeIndicator ::= [APPLICATION 166] AsciiString --(SIZE(1))
+PartialTypeIndicator ::=  [APPLICATION 166] AsciiString --(SIZE(1))
 
 PaymentMethod ::= [APPLICATION 347] INTEGER
  
@@ -1152,53 +997,13 @@ PdpAddress ::= [APPLICATION 167] PacketDataProtocolAddress
 
 PDPContextStartTimestamp ::= [APPLICATION 260] DateTime
 
-PdpType ::= [APPLICATION 168] INTEGER
-
 PlmnId ::= [APPLICATION 169] AsciiString --(SIZE(5))
 
 PositioningMethod ::= [APPLICATION 395] INTEGER
 
 PriorityCode ::= [APPLICATION 170] INTEGER
 
-QoSAllocRetenPriority ::= [APPLICATION 275] INTEGER
-
-QoSDelay ::= [APPLICATION 171] INTEGER
-
-QoSGuaranteedBitRateDownlink ::= [APPLICATION 283] OCTET STRING --(SIZE(1))
-
-QoSGuaranteedBitRateUplink ::= [APPLICATION 284] OCTET STRING --(SIZE(1))
-
-QoSMaxBitRateDownlink ::= [APPLICATION 274] OCTET STRING --(SIZE(1))
-
-QoSMaxBitRateUplink ::= [APPLICATION 264] OCTET STRING --(SIZE(1))
-
-QoSMeanThroughput ::= [APPLICATION 173] INTEGER
-
-QoSPeakThroughput ::= [APPLICATION 174] INTEGER
-
-QoSPrecedence ::= [APPLICATION 175] INTEGER
-
-QoSReliability ::= [APPLICATION 176] INTEGER
-
-QoSRequested ::= CHOICE
-{
- gsmQoSRequested GSMQoSRequested,
- umtsQoSRequested UMTSQoSRequested
-}
-
-QoSTrafficClass ::= [APPLICATION 268] INTEGER
-
-QoSUsed ::= CHOICE
-{
- gsmQoSUsed GSMQoSUsed,
- umtsQoSUsed UMTSQoSUsed
-}
-
-RadioChannelRequested ::= [APPLICATION 179] INTEGER
-
-RadioChannelUsed ::= [APPLICATION 180] INTEGER
-
-RapFileSequenceNumber ::= [APPLICATION 181] FileSequenceNumber
+RapFileSequenceNumber ::= [APPLICATION 181]  FileSequenceNumber
 
 RecEntityCode ::= [APPLICATION 184] Code
 
@@ -1210,18 +1015,17 @@ RecEntityInfoList ::= [APPLICATION 188] SEQUENCE OF RecEntityInformation
 
 RecEntityInformation ::= [APPLICATION 183] SEQUENCE
 {
- recEntityCode RecEntityCode OPTIONAL,
- recEntityType RecEntityType OPTIONAL,
- recEntityId RecEntityId OPTIONAL
+    recEntityCode  RecEntityCode OPTIONAL, -- *m.m.
+    recEntityType  RecEntityType OPTIONAL, -- *m.m.
+    recEntityId    RecEntityId   OPTIONAL, -- *m.m.
+...
 }
  
 RecEntityType ::= [APPLICATION 186] INTEGER
 
-Recipient ::= [APPLICATION 182] PlmnId
+Recipient ::= [APPLICATION 182]  PlmnId
 
 ReleaseVersionNumber ::= [APPLICATION 189] INTEGER
-
-RemotePdpAddressList ::= [APPLICATION 190] SEQUENCE OF PacketDataProtocolAddress
 
 RequestedDeliveryTimeStamp ::= [APPLICATION 301] DateTime
 
@@ -1231,69 +1035,71 @@ ResponseTimeCategory ::= [APPLICATION 387] INTEGER
 
 ScuBasicInformation ::= [APPLICATION 191] SEQUENCE
 {
- chargeableSubscriber ScuVasChargeableSubscriber OPTIONAL,
- chargedPartyStatus ChargedPartyStatus OPTIONAL,
- nonChargedParty NonChargedParty OPTIONAL,
- clirIndicator ClirIndicator OPTIONAL,
- originatingNetwork OriginatingNetwork OPTIONAL,
- destinationNetwork DestinationNetwork OPTIONAL
+    chargeableSubscriber      ScuChargeableSubscriber OPTIONAL, -- *m.m.
+    chargedPartyStatus        ChargedPartyStatus         OPTIONAL, -- *m.m.
+    nonChargedNumber          NonChargedNumber           OPTIONAL, -- *m.m.
+    clirIndicator             ClirIndicator              OPTIONAL,
+    originatingNetwork        OriginatingNetwork         OPTIONAL,
+    destinationNetwork        DestinationNetwork         OPTIONAL,
+...
 }
 
-ScuChargeType ::= [APPLICATION 192] SEQUENCE
+ScuChargeType ::= [APPLICATION 192]  SEQUENCE
 {
- messageStatus MessageStatus OPTIONAL,
- priorityCode PriorityCode OPTIONAL,
- distanceChargeBandCode DistanceChargeBandCode OPTIONAL,
- messageType MessageType OPTIONAL,
- messageDescriptionCode MessageDescriptionCode OPTIONAL
+    messageStatus               MessageStatus          OPTIONAL, -- *m.m.
+    priorityCode                PriorityCode           OPTIONAL, -- *m.m.
+    distanceChargeBandCode      DistanceChargeBandCode OPTIONAL,
+    messageType                 MessageType            OPTIONAL, -- *m.m.
+    messageDescriptionCode      MessageDescriptionCode OPTIONAL, -- *m.m.
+...
 }
 
-ScuTimeStamps ::= [APPLICATION 193] SEQUENCE
+ScuTimeStamps ::= [APPLICATION 193]  SEQUENCE
 {
- depositTimeStamp DepositTimeStamp OPTIONAL,
- completionTimeStamp CompletionTimeStamp OPTIONAL,
- chargingPoint ChargingPoint OPTIONAL
+    depositTimeStamp            DepositTimeStamp    OPTIONAL, -- *m.m.
+    completionTimeStamp         CompletionTimeStamp OPTIONAL, -- *m.m.
+    chargingPoint               ChargingPoint       OPTIONAL, -- *m.m.
+...
 }
 
-ScuVasChargeableSubscriber ::= CHOICE 
+ScuChargeableSubscriber ::= [APPLICATION 430] CHOICE 
 {
- gsmChargeableSubscriber GsmChargeableSubscriber,
- minChargeableSubscriber MinChargeableSubscriber
+    gsmChargeableSubscriber    GsmChargeableSubscriber,
+    minChargeableSubscriber    MinChargeableSubscriber,
+...
 }
 
-Sender ::= [APPLICATION 196] PlmnId
+Sender ::= [APPLICATION 196]  PlmnId
 
-ServingBid ::= [APPLICATION 198] Bid
+ServingBid ::= [APPLICATION 198]  Bid
 
 ServingLocationDescription ::= [APPLICATION 414] LocationDescription
 
-ServingNetwork ::= [APPLICATION 195] AsciiString
+ServingNetwork ::= [APPLICATION 195]  AsciiString
 
 ServingPartiesInformation ::= [APPLICATION 335] SEQUENCE
 {
- contentProviderName ContentProviderName OPTIONAL,
- contentProviderIdList ContentProviderIdList OPTIONAL,
- internetServiceProviderIdList InternetServiceProviderIdList OPTIONAL,
- networkList NetworkList OPTIONAL
+    contentProviderName           ContentProviderName           OPTIONAL, -- *m.m.
+    contentProviderIdList         ContentProviderIdList         OPTIONAL,
+    internetServiceProviderIdList InternetServiceProviderIdList OPTIONAL,
+    networkList                   NetworkList                   OPTIONAL,
+...
 }
  
 SimChargeableSubscriber ::= [APPLICATION 199] SEQUENCE
 {
- imsi Imsi OPTIONAL,
- msisdn Msisdn OPTIONAL
+    imsi     Imsi   OPTIONAL, -- *m.m.
+    msisdn   Msisdn OPTIONAL,
+...
 }
 
 SimToolkitIndicator ::= [APPLICATION 200] AsciiString --(SIZE(1)) 
 
 SMSDestinationNumber ::= [APPLICATION 419] AsciiString
 
-SpecificationVersionNumber ::= [APPLICATION 201] INTEGER
+SMSOriginator ::= [APPLICATION 425] AsciiString
 
-SpeechVersion ::= INTEGER
-
-SpeechVersionRequested ::= [APPLICATION 202] SpeechVersion
-
-SpeechVersionUsed ::= [APPLICATION 203] SpeechVersion
+SpecificationVersionNumber  ::= [APPLICATION 201] INTEGER
 
 SsParameters ::= [APPLICATION 204] AsciiString --(SIZE(1..40))
 
@@ -1303,16 +1109,14 @@ SupplServiceCode ::= [APPLICATION 209] HexString --(SIZE(2))
 
 SupplServiceUsed ::= [APPLICATION 206] SEQUENCE
 {
- supplServiceCode SupplServiceCode OPTIONAL,
- supplServiceActionCode SupplServiceActionCode OPTIONAL,
- ssParameters SsParameters OPTIONAL,
- thirdPartyInformation ThirdPartyInformation OPTIONAL,
- chargingTimeStamp ChargingTimeStamp OPTIONAL,
- chargeInformation ChargeInformation OPTIONAL,
- basicServiceCodeList BasicServiceCodeList OPTIONAL
+    supplServiceCode       SupplServiceCode       OPTIONAL, -- *m.m.
+    supplServiceActionCode SupplServiceActionCode OPTIONAL, -- *m.m.
+    ssParameters           SsParameters           OPTIONAL,
+    chargingTimeStamp      ChargingTimeStamp      OPTIONAL,
+    chargeInformation      ChargeInformation      OPTIONAL,
+    basicServiceCodeList   BasicServiceCodeList   OPTIONAL,
+...
 }
-
-SupplServiceUsedList ::= [APPLICATION 207] SEQUENCE OF SupplServiceUsed
 
 TapCurrency ::= [APPLICATION 210] Currency
 
@@ -1322,24 +1126,26 @@ TaxableAmount ::= [APPLICATION 398] AbsoluteAmount
 
 Taxation ::= [APPLICATION 216] SEQUENCE
 {
- taxCode TaxCode OPTIONAL,
- taxType TaxType OPTIONAL,
- taxRate TaxRate OPTIONAL
+    taxCode     TaxCode     OPTIONAL, -- *m.m.
+    taxType     TaxType     OPTIONAL, -- *m.m.
+    taxRate     TaxRate     OPTIONAL,
+    chargeType  ChargeType  OPTIONAL,
+...
 }
 
-TaxationList ::= [APPLICATION 211] SEQUENCE OF Taxation
+TaxationList ::= [APPLICATION 211]  SEQUENCE OF Taxation
 
 TaxCode ::= [APPLICATION 212] INTEGER
 
 TaxInformation ::= [APPLICATION 213] SEQUENCE
 {
- taxCode TaxCode OPTIONAL,
- taxValue TaxValue OPTIONAL,
- chargeType ChargeType OPTIONAL,
- taxableAmount TaxableAmount OPTIONAL
+    taxCode          TaxCode       OPTIONAL, -- *m.m.
+    taxValue         TaxValue      OPTIONAL, -- *m.m.
+    taxableAmount    TaxableAmount OPTIONAL,
+...
 }
 
-TaxInformationList ::= [APPLICATION 214] SEQUENCE OF TaxInformation
+TaxInformationList ::= [APPLICATION 214]  SEQUENCE OF TaxInformation
 
 TaxRate ::= [APPLICATION 215] NumberString (SIZE(7))
 
@@ -1349,23 +1155,21 @@ TaxValue ::= [APPLICATION 397] AbsoluteAmount
 
 TeleServiceCode ::= [APPLICATION 218] HexString --(SIZE(2))
 
-ThirdPartyInformation ::= [APPLICATION 219] SEQUENCE
+ThirdPartyInformation ::= [APPLICATION 219]  SEQUENCE
 {
- thirdPartyNumber ThirdPartyNumber OPTIONAL,
- clirIndicator ClirIndicator OPTIONAL
+    thirdPartyNumber            ThirdPartyNumber OPTIONAL,
+    clirIndicator               ClirIndicator         OPTIONAL,
+...
 }
 
 ThirdPartyNumber ::= [APPLICATION 403] AddressStringDigits
 
-ThreeGcamelDestination ::= CHOICE
+ThreeGcamelDestination ::= [APPLICATION 431] CHOICE
 {
- camelDestinationNumber CamelDestinationNumber,
- gprsDestination GprsDestination
+    camelDestinationNumber    CamelDestinationNumber,
+    gprsDestination           GprsDestination,
+...
 }
-
-TimeBand ::= [APPLICATION 220] AsciiString --(SIZE(1))
-
-TimeBandSubtype ::= [APPLICATION 221] AsciiString --(SIZE(1))
 
 TotalAdvisedCharge ::= [APPLICATION 356] AbsoluteAmount
  
@@ -1373,11 +1177,12 @@ TotalAdvisedChargeRefund ::= [APPLICATION 357] AbsoluteAmount
  
 TotalAdvisedChargeValue ::= [APPLICATION 360] SEQUENCE
 {
- advisedChargeCurrency AdvisedChargeCurrency OPTIONAL,
- totalAdvisedCharge TotalAdvisedCharge OPTIONAL,
- totalAdvisedChargeRefund TotalAdvisedChargeRefund OPTIONAL,
- totalCommission TotalCommission OPTIONAL,
- totalCommissionRefund TotalCommissionRefund OPTIONAL
+    advisedChargeCurrency    AdvisedChargeCurrency    OPTIONAL,
+    totalAdvisedCharge       TotalAdvisedCharge       OPTIONAL, -- *m.m.
+    totalAdvisedChargeRefund TotalAdvisedChargeRefund OPTIONAL,
+    totalCommission          TotalCommission          OPTIONAL,
+    totalCommissionRefund    TotalCommissionRefund    OPTIONAL,
+...
 }
  
 TotalAdvisedChargeValueList ::= [APPLICATION 361] SEQUENCE OF TotalAdvisedChargeValue
@@ -1388,15 +1193,6 @@ TotalCharge ::= [APPLICATION 415] AbsoluteAmount
 
 TotalChargeRefund ::= [APPLICATION 355] AbsoluteAmount
  
-TotalChargeValue ::= [APPLICATION 222] SEQUENCE
-{
- chargeType ChargeType OPTIONAL,
- totalCharge TotalCharge OPTIONAL,
- totalChargeRefund TotalChargeRefund OPTIONAL
-} 
-
-TotalChargeValueList ::= [APPLICATION 224] SEQUENCE OF TotalChargeValue
-
 TotalCommission ::= [APPLICATION 358] AbsoluteAmount
  
 TotalCommissionRefund ::= [APPLICATION 359] AbsoluteAmount
@@ -1415,77 +1211,87 @@ TotalTransactionDuration ::= [APPLICATION 416] TotalCallEventDuration
 
 TrackedCustomerEquipment ::= [APPLICATION 381] SEQUENCE
 {
- equipmentIdType EquipmentIdType OPTIONAL,
- equipmentId EquipmentId OPTIONAL
+    equipmentIdType               EquipmentIdType OPTIONAL, -- *m.m.
+    equipmentId                   EquipmentId     OPTIONAL, -- *m.m.
+...
 }
 
 TrackedCustomerHomeId ::= [APPLICATION 377] SEQUENCE
 {
- homeIdType HomeIdType OPTIONAL,
- homeIdentifier HomeIdentifier OPTIONAL
+    homeIdType                    HomeIdType     OPTIONAL, -- *m.m.
+    homeIdentifier                HomeIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackedCustomerHomeIdList ::= [APPLICATION 376] SEQUENCE OF TrackedCustomerHomeId
 
 TrackedCustomerIdentification ::= [APPLICATION 372] SEQUENCE
 {
- customerIdType CustomerIdType OPTIONAL,
- customerIdentifier CustomerIdentifier OPTIONAL
+    customerIdType                CustomerIdType     OPTIONAL, -- *m.m.
+    customerIdentifier            CustomerIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackedCustomerIdList ::= [APPLICATION 370] SEQUENCE OF TrackedCustomerIdentification
 
 TrackedCustomerInformation ::= [APPLICATION 367] SEQUENCE
 {
- trackedCustomerIdList TrackedCustomerIdList OPTIONAL,
- trackedCustomerHomeIdList TrackedCustomerHomeIdList OPTIONAL,
- trackedCustomerLocList TrackedCustomerLocList OPTIONAL,
- trackedCustomerEquipment TrackedCustomerEquipment OPTIONAL
+    trackedCustomerIdList         TrackedCustomerIdList     OPTIONAL, -- *m.m.
+    trackedCustomerHomeIdList     TrackedCustomerHomeIdList OPTIONAL,
+    trackedCustomerLocList        TrackedCustomerLocList    OPTIONAL,
+    trackedCustomerEquipment      TrackedCustomerEquipment  OPTIONAL,
+...
 }
 
 TrackedCustomerLocation ::= [APPLICATION 380] SEQUENCE
 {
- locationIdType LocationIdType OPTIONAL,
- locationIdentifier LocationIdentifier OPTIONAL
+    locationIdType                LocationIdType     OPTIONAL, -- *m.m.
+    locationIdentifier            LocationIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackedCustomerLocList ::= [APPLICATION 379] SEQUENCE OF
- TrackedCustomerLocation
+    TrackedCustomerLocation
 
 TrackingCustomerEquipment ::= [APPLICATION 371] SEQUENCE
 {
- equipmentIdType EquipmentIdType OPTIONAL,
- equipmentId EquipmentId OPTIONAL
+    equipmentIdType               EquipmentIdType OPTIONAL, -- *m.m.
+    equipmentId                   EquipmentId     OPTIONAL, -- *m.m.
+...
 }
 
 TrackingCustomerHomeId ::= [APPLICATION 366] SEQUENCE
 {
- homeIdType HomeIdType OPTIONAL,
- homeIdentifier HomeIdentifier OPTIONAL
+    homeIdType                    HomeIdType     OPTIONAL, -- *m.m.
+    homeIdentifier                HomeIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackingCustomerHomeIdList ::= [APPLICATION 365] SEQUENCE OF TrackingCustomerHomeId
 
 TrackingCustomerIdentification ::= [APPLICATION 362] SEQUENCE
 {
- customerIdType CustomerIdType OPTIONAL,
- customerIdentifier CustomerIdentifier OPTIONAL
+    customerIdType                CustomerIdType     OPTIONAL, -- *m.m.
+    customerIdentifier            CustomerIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackingCustomerIdList ::= [APPLICATION 299] SEQUENCE OF TrackingCustomerIdentification
 
 TrackingCustomerInformation ::= [APPLICATION 298] SEQUENCE
 {
- trackingCustomerIdList TrackingCustomerIdList OPTIONAL,
- trackingCustomerHomeIdList TrackingCustomerHomeIdList OPTIONAL,
- trackingCustomerLocList TrackingCustomerLocList OPTIONAL,
- trackingCustomerEquipment TrackingCustomerEquipment OPTIONAL
+    trackingCustomerIdList        TrackingCustomerIdList     OPTIONAL, -- *m.m.
+    trackingCustomerHomeIdList    TrackingCustomerHomeIdList OPTIONAL,
+    trackingCustomerLocList       TrackingCustomerLocList    OPTIONAL,
+    trackingCustomerEquipment     TrackingCustomerEquipment  OPTIONAL,
+...
 }
 
 TrackingCustomerLocation ::= [APPLICATION 369] SEQUENCE
 {
- locationIdType LocationIdType OPTIONAL,
- locationIdentifier LocationIdentifier OPTIONAL
+    locationIdType                LocationIdType     OPTIONAL, -- *m.m.
+    locationIdentifier            LocationIdentifier OPTIONAL, -- *m.m.
+...
 }
 
 TrackingCustomerLocList ::= [APPLICATION 368] SEQUENCE OF TrackingCustomerLocation
@@ -1510,22 +1316,6 @@ TransferCutOffTimeStamp ::= [APPLICATION 227] DateTimeLong
 
 TransparencyIndicator ::= [APPLICATION 228] INTEGER
 
-TypeOfControllingNode ::= [APPLICATION 229] INTEGER
-
-UMTSQoSInformation ::= SEQUENCE
-{
- trafficClass QoSTrafficClass OPTIONAL,
- maxBitRateUplink QoSMaxBitRateUplink OPTIONAL,
- maxBitRateDownlink QoSMaxBitRateDownlink OPTIONAL,
- qoSGuaranteedBitRateDownlink QoSGuaranteedBitRateDownlink OPTIONAL,
- qoSGuaranteedBitRateUplink QoSGuaranteedBitRateUplink OPTIONAL,
- allocRetenPriority QoSAllocRetenPriority OPTIONAL
-}
-
-UMTSQoSRequested ::= [APPLICATION 270] UMTSQoSInformation
-
-UMTSQoSUsed ::= [APPLICATION 271] UMTSQoSInformation
-
 UserProtocolIndicator ::= [APPLICATION 280] INTEGER
 
 UtcTimeOffset ::= [APPLICATION 231] AsciiString --(SIZE(5))
@@ -1534,33 +1324,12 @@ UtcTimeOffsetCode ::= [APPLICATION 232] Code
 
 UtcTimeOffsetInfo ::= [APPLICATION 233] SEQUENCE
 {
- utcTimeOffsetCode UtcTimeOffsetCode OPTIONAL,
- utcTimeOffset UtcTimeOffset OPTIONAL
+    utcTimeOffsetCode   UtcTimeOffsetCode OPTIONAL, -- *m.m.
+    utcTimeOffset       UtcTimeOffset     OPTIONAL, -- *m.m.
+...
 }
 
-UtcTimeOffsetInfoList ::= [APPLICATION 234] SEQUENCE OF UtcTimeOffsetInfo
-
-ValueAddedServiceUsed ::= [APPLICATION 236] SEQUENCE
-{
- vasCode VasCode OPTIONAL,
- chargingTimeStamp ChargingTimeStamp OPTIONAL,
- chargeInformation ChargeInformation OPTIONAL
-}
-
-ValueAddedServiceUsedList ::= [APPLICATION 235] SEQUENCE OF ValueAddedServiceUsed 
-
-VasCode ::= [APPLICATION 237] Code
-
-VasDescription ::= [APPLICATION 239] Description
-
-VasInformation ::= [APPLICATION 238] SEQUENCE
-{
- vasCode VasCode OPTIONAL,
- vasShortDesc VasShortDescription OPTIONAL,
- vasDesc VasDescription OPTIONAL
-}
-
-VasShortDescription ::= [APPLICATION 240] Description
+UtcTimeOffsetInfoList ::= [APPLICATION 234]  SEQUENCE OF UtcTimeOffsetInfo
 
 VerticalAccuracyDelivered ::= [APPLICATION 393] INTEGER
 
@@ -1583,21 +1352,21 @@ VerticalAccuracyRequested ::= [APPLICATION 386] INTEGER
 -- value by division by 10^TapDecimalPlaces.
 -- e.g. for TapDecimalPlaces = 3 the following values
 -- will be derived:
--- 0 represents 0.000
--- 12 represents 0.012
--- 1234 represents 1.234
+--       0   represents    0.000
+--      12   represents    0.012
+--    1234   represents    1.234
 -- for TapDecimalPlaces = 5 the following values will be
 -- derived:
--- 0 represents 0.00000
--- 1234 represents 0.01234
--- 123456 represents 1.23456
+--       0   represents    0.00000
+--    1234   represents    0.01234
+--  123456   represents    1.23456
 -- This data type is used to encode (total) 
 -- charges, (total) discount values and 
 -- (total) tax values. 
 -- 
 AbsoluteAmount ::= INTEGER 
 
-Bid ::= AsciiString --(SIZE(5))
+Bid ::=  AsciiString --(SIZE(5))
 
 Code ::= INTEGER
 
@@ -1610,23 +1379,29 @@ Code ::= INTEGER
 -- The following definitions should be used for TAP file creation instead of
 -- the default specifications (OCTET STRING)
 --
--- AsciiString ::= VisibleString
+--    AsciiString ::= VisibleString
 --
--- Currency ::= VisibleString
+--    Currency ::= VisibleString
 --
--- HexString ::= VisibleString
+--    HexString ::= VisibleString
 --
--- NumberString ::= NumericString
+--    NumberString ::= NumericString
 --
+--    AsciiString contains visible ISO 646 characters.
+--    Leading and trailing spaces shall be discarded during processing.
+--    An AsciiString cannot contain only spaces.
 
 AsciiString ::= OCTET STRING
 
 --
--- The BCDString data type (Binary Coded Decimal String) is used to
--- represent several digits from 0 through 9, a, b, c, d, e
--- two digits per octet, f as filler when there is an odd number 
--- of digits.
---
+-- The BCDString data type (Binary Coded Decimal String) is used to represent
+-- several digits from 0 through 9, a, b, c, d, e.
+-- Two digits are encoded per octet.  The four leftmost bits of the octet represent
+-- the first digit while the four remaining bits represent the following digit.  
+-- A single f shall be used as a filler when the total number of digits to be 
+-- encoded is odd.
+-- No other filler is allowed.
+
 BCDString ::= OCTET STRING
 
 
@@ -1636,9 +1411,15 @@ BCDString ::= OCTET STRING
 --
 Currency ::= OCTET STRING
 
-Description ::= AsciiString
+--
+-- HexString contains ISO 646 characters from 0 through 9, A, B, C, D, E, F.
+--
 
 HexString ::= OCTET STRING
+
+--
+-- NumberString contains ISO 646 characters from 0 through 9.
+--
 
 NumberString ::= OCTET STRING
 
@@ -1651,10 +1432,10 @@ NumberString ::= OCTET STRING
 -- rate is obtained by dividing the integer value by 100
 -- Examples:
 --
--- 1500 represents 15.00 percent
--- 1 represents 0.01 percent
+--     1500  represents  15.00 percent
+--     1     represents   0.01 percent
 --
 PercentageRate ::= INTEGER 
 
 
--- END
+END

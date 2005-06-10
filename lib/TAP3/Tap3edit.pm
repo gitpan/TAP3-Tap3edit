@@ -45,7 +45,7 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.25";
+	$VERSION = "0.26";
 }
 
 sub new {
@@ -706,7 +706,7 @@ sub _get_bci
 	} elsif ( $type eq "RAP" ) {
 
 		read FILE, $bci_tag, 4;
-		read FILE, $bci_tag, substr(bcd_to_hexa($bci_tag),3,1);
+		read FILE, $bci_tag, substr(bcd_to_hexa($bci_tag),7,1);
 		read FILE, $bci_tag, 3;
 		read FILE, $bci_size, 1;
 		read FILE, $bci_body, bcd_to_asc($bci_size); # To read the body we convert the hexa size into ascii
@@ -860,7 +860,7 @@ sub _get_file_version
 				## 
 				## 2.4 If nothing works we show the error message.
 
-				$self->{error}="File Type Unknown or Failed to get it: ".$asn->error;
+				$self->{error}="File Type Unknown or Failed to get it: ".$bci_asn->error;
 				croak $self->error();
 
 			} else {
@@ -955,6 +955,7 @@ sub _select_asn_struct
 
 	my $size;
 	my $spec_buf_in;
+	my $spec_buf_in_tmp;
 
 	##
 	## 1. Select the ASN.1 structure
@@ -986,14 +987,35 @@ sub _select_asn_struct
 
 	($size) = (stat($self->spec_file))[7] or do { $self->{error}="$! reading ".$self->spec_file; return undef };
 	open FILE, "<".$self->spec_file or do { $self->{error}="$! opening ".$self->spec_file; return undef };
+
 	while (<FILE>) {
 		if ( /^...Structure of a ... batch/.../END/ ) {
 			if ( $_ !~ m/Structure of a Tap batch/ and $_ !~ m/END/ ) {
-				$spec_buf_in=$spec_buf_in.$_;
+				$spec_buf_in_tmp=$spec_buf_in_tmp.$_;
 			}
 		}
 	}
+
 	close FILE;
+
+	# Following algorithm will strip the chane ",\n..." since the three dots and a comma
+	# in the last element is not supported by Convert::ASN1
+
+
+	while($spec_buf_in_tmp =~ /(?:
+			(,(?:\s|\t)*?\n(?:\s|\t)*?\.\.\.(?:\s|\t)*?\n)
+		|
+			((?:\s|\t)*?\.\.\.(?:\s|\t)*?,(?:\s|\t)*?\n)
+		|
+			(.*?(?=,(?:\s|\t)*?\n(?:\s|\t)*?\.\.\.(?:\s|\t)*?\n|^(?:\s|\t)*?\.\.\.(?:\s|\t)*?,(?:\s|\t)*?\n)?)
+
+	)/sgxo) {
+		if (defined $1 or defined $2) {
+			$spec_buf_in=$spec_buf_in."\n";
+		} else {
+			$spec_buf_in=$spec_buf_in."$+";
+		}
+	}
 
 	## 
 	## 2.2. If it is a RAP file, we read as well the specification of its tap file.
