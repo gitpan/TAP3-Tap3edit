@@ -1147,7 +1147,7 @@ TaxInformation ::= [APPLICATION 213] SEQUENCE
 
 TaxInformationList ::= [APPLICATION 214]  SEQUENCE OF TaxInformation
 
-TaxRate ::= [APPLICATION 215] NumberString (SIZE(7))
+TaxRate ::= [APPLICATION 215] NumberString --(SIZE(7))
 
 TaxType ::= [APPLICATION 217] AsciiString --(SIZE(2))
 

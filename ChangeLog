@@ -1,8 +1,20 @@
+2005.07.14 00:00  Javier Gutierrez
+
+	* Improvement of data conversion.
+	* Support for Acknowledment Files. Sorry I did not test this new feature, but I have no AC files. 
+	  If you are willing to test this feature and let me know the results I'll be glad.
+	* Better support for recognition of File types.
+	* Solved problem of encoding under Windows. Thanks Denis.
+	* Better support for ellipsis under Windows.
+	* Small adaptation of TAP0311 specification to allow the decoding.
+
+	New release 0.27
+
 2005.05.22 00:00  Javier Gutierrez
 
 	* Support for TAP3.11 and RAP1.3
 	* Support for ellipsis on the ASN.1 Specification
-	* Fix bug reading RAP files. Now they are decoded properly. Thanks Imram.
+	* Fix bug reading RAP files. Now they are decoded properly. Thanks Imran.
 	* Fix error message when file type not found.
 
 	New release 0.26

@@ -2,7 +2,7 @@
 # designed to decode, modify and encode Roaming GSM TAP/RAP 
 # files
 # 
-# Copyright (c) 2004 Javier Gutierrez. All rights reserved.
+# Copyright (c) 2005 Javier Gutierrez. All rights reserved.
 # Email Address <javier.gutierrez@tap3edit.com>. 
 # This program is free software; you can redistribute 
 # it and/or modify it under the same terms as Perl itself.
@@ -45,8 +45,38 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.26";
+	$VERSION = "0.27";
 }
+
+
+my %FILE_TYPES = (
+	TAP => { 
+		FIND_STRING => "BatchControlInfo",
+		PREPARE_FUNC => "_prepare_bci_tap0301",
+		REAL_FILE_TYPE => "TAP",
+	},
+	TAP => { 
+		FIND_STRING => "BatchControlInfo",
+		PREPARE_FUNC => "_prepare_bci_tap0304",
+		REAL_FILE_TYPE => "TAP",
+	},
+	NOT => { 
+		FIND_STRING => "Notification",
+		PREPARE_FUNC => "_prepare_not",
+		REAL_FILE_TYPE => "TAP",
+	},
+	RAP => { 
+		FIND_STRING => "RapBatchControlInfo",
+		PREPARE_FUNC => "_prepare_rbci",
+		REAL_FILE_TYPE => "RAP",
+	},
+	ACK => { 
+		FIND_STRING => "Acknowledgement",
+		PREPARE_FUNC => "_prepare_ack",
+		REAL_FILE_TYPE => "ACK",
+	},
+);
+	
 
 sub new {
 	my $proto = shift;
@@ -342,16 +372,16 @@ sub _asn_path {
 
 
 #----------------------------------------------------------------
-# Method:       _prepare_bci
-# Description:  contains the BatchControlInfo to decode the 
-#               "header" of TAP files and found out their
-#               version and release.
+# Method:       _prepare_bci_tap0301
+# Description:  contains the BatchControlInfo of TAP03 releases:
+#               1, 2 and 3, to decode the "header" of TAP files 
+#               and found out their version and release.
 # Parameters:   N/A
 # Returns:      object
 # Type:         Private
 # Restrictions: N/A
 #----------------------------------------------------------------
-sub _prepare_bci()
+sub _prepare_bci_tap0301()
 {
 	my $self = shift;
 
@@ -426,6 +456,92 @@ ASN1
 	return $asn_bci;
 }
 
+#----------------------------------------------------------------
+# Method:       _prepare_bci_tap0304
+# Description:  contains the BatchControlInfo of TAP03 releases:
+#               4 and over, to decode the "header" of TAP files 
+#               and found out their version and release.
+# Parameters:   N/A
+# Returns:      object
+# Type:         Private
+# Restrictions: N/A
+#----------------------------------------------------------------
+sub _prepare_bci_tap0304()
+{
+	my $self = shift;
+
+	# parse ASN.1 desciptions
+	# First we load the BatchControlInfo to know the version and release 
+	# of the files.
+
+	my $asn_bci = Convert::ASN1->new;
+	$asn_bci->prepare(<<ASN1) or do { $self->{error}=$asn_bci->error; return undef };
+	--
+	-- The following ASN.1 Specification defines only the BatchControlInfo.
+	-- Usefull to find out which version and release has the file.
+	--
+
+	BatchControlInfo ::= [APPLICATION 4] SEQUENCE
+	{
+	 sender Sender OPTIONAL,
+	 recipient Recipient OPTIONAL,
+	 fileSequenceNumber FileSequenceNumber OPTIONAL,
+	 fileCreationTimeStamp FileCreationTimeStamp OPTIONAL,
+	 transferCutOffTimeStamp TransferCutOffTimeStamp OPTIONAL,
+	 fileAvailableTimeStamp FileAvailableTimeStamp OPTIONAL,
+	 specificationVersionNumber SpecificationVersionNumber OPTIONAL,
+	 releaseVersionNumber ReleaseVersionNumber OPTIONAL,
+	 fileTypeIndicator FileTypeIndicator OPTIONAL,
+	 rapFileSequenceNumber RapFileSequenceNumber OPTIONAL,
+	 operatorSpecInformation OperatorSpecInfoList OPTIONAL
+	}
+
+	Sender ::= [APPLICATION 196] PlmnId
+
+	Recipient ::= [APPLICATION 182] PlmnId
+
+	PlmnId ::= [APPLICATION 169] AsciiString --(SIZE(5))
+
+	FileCreationTimeStamp ::= [APPLICATION 108] DateTimeLong
+
+	TransferCutOffTimeStamp ::= [APPLICATION 227] DateTimeLong
+
+	FileAvailableTimeStamp ::= [APPLICATION 107] DateTimeLong
+
+	SpecificationVersionNumber ::= [APPLICATION 201] INTEGER
+
+	ReleaseVersionNumber ::= [APPLICATION 189] INTEGER
+
+	FileTypeIndicator ::= [APPLICATION 110] AsciiString --(SIZE(1))
+
+	RapFileSequenceNumber ::= [APPLICATION 181] FileSequenceNumber
+
+	OperatorSpecInformation ::= [APPLICATION 163] AsciiString
+
+	OperatorSpecInfoList ::= [APPLICATION 162] SEQUENCE OF OperatorSpecInformation
+
+	DateTimeLong ::= [APPLICATION 84] SEQUENCE 
+	{
+	 localTimeStamp LocalTimeStamp OPTIONAL ,
+	 utcTimeOffset UtcTimeOffset OPTIONAL
+	}
+
+	LocalTimeStamp ::= [APPLICATION 16] NumberString --(SIZE(14))
+
+	UtcTimeOffset ::= [APPLICATION 231] AsciiString --(SIZE(5))
+
+	AsciiString ::= OCTET STRING
+
+	FileSequenceNumber ::= [APPLICATION 109] NumberString --(SIZE(5))
+
+	NumberString ::= OCTET STRING
+
+	-- END
+
+ASN1
+
+	return $asn_bci;
+}
 
 #----------------------------------------------------------------
 # Method:       _prepare_rbci
@@ -521,6 +637,84 @@ ASN1
 	return $asn_bci;
 }
 
+#----------------------------------------------------------------
+# Method:       _prepare_ack
+# Description:  contains the Acknowledgement Info to decode the 
+#               "header" of Acknowledment files and found out their
+#               version and release, and version and release of its 
+#               TAP file (stored into supl_version and 
+#               supl_release)
+# Parameters:   N/A
+# Returns:      object
+# Type:         Private
+# Restrictions: N/A
+#----------------------------------------------------------------
+sub _prepare_ack()
+{
+	my $self = shift;
+
+	# parse ASN.1 desciptions
+	# First we load the Acknowledgement to know the version and release 
+	# of the Acknowledment files.
+
+	my $asn_bci = Convert::ASN1->new;
+	$asn_bci->prepare(<<ASN1) or do { $self->{error}=$asn_bci->error; return undef };
+	--
+	-- The following ASN.1 Specification defines only the Acknowledgement.
+	-- Usefull to find out which version and release has the Acknowledment file.
+	--
+
+	Acknowledgement ::= [APPLICATION 535] SEQUENCE
+	{
+	sender                          Sender,
+	recipient                               Recipient,
+	rapFileSequenceNumber           RapFileSequenceNumber,
+	ackFileCreationTimeStamp        AckFileCreationTimeStamp,
+	ackFileAvailableTimeStamp       AckFileAvailableTimeStamp,
+	fileTypeIndicator                       FileTypeIndicator                       OPTIONAL,
+	operatorSpecList                        OperatorSpecList                        OPTIONAL
+	}
+
+	Sender ::= [APPLICATION 196] PlmnId
+
+	Recipient ::= [APPLICATION 182] PlmnId
+
+	PlmnId ::= [APPLICATION 169] AsciiString --(SIZE(5))
+
+	RapFileSequenceNumber ::= [APPLICATION 181] FileSequenceNumber
+
+	AckFileAvailableTimeStamp ::= [APPLICATION 515] DateTimeLong
+
+	AckFileCreationTimeStamp ::= [APPLICATION 516] DateTimeLong
+
+	FileTypeIndicator ::= [APPLICATION 110] AsciiString --(SIZE(1))
+
+	OperatorSpecList ::= [APPLICATION 551] SEQUENCE OF OperatorSpecInformation
+
+	OperatorSpecInformation ::= [APPLICATION 163] AsciiString
+
+	DateTimeLong ::= [APPLICATION 84] SEQUENCE 
+	{
+	 localTimeStamp LocalTimeStamp OPTIONAL ,
+	 utcTimeOffset UtcTimeOffset OPTIONAL
+	}
+
+	LocalTimeStamp ::= [APPLICATION 16] NumberString --(SIZE(14))
+
+	UtcTimeOffset ::= [APPLICATION 231] AsciiString --(SIZE(5))
+
+	AsciiString ::= OCTET STRING
+
+	FileSequenceNumber ::= [APPLICATION 109] NumberString --(SIZE(5))
+
+	NumberString ::= OCTET STRING
+
+	-- END
+
+ASN1
+
+	return $asn_bci;
+}
 
 #----------------------------------------------------------------
 # Method:       _prepare_not
@@ -610,10 +804,11 @@ ASN1
 	return $asn_not;
 }
 
+
 #----------------------------------------------------------------
 # Function:     bcd_to_hexa
 # Description:  Converts the input binary format from the TAP/RAP
-#               files into Hexadecimal.
+#               files into Hexadecimal string.
 # Parameters:   binary_string
 # Returns:      hexadecimal value
 # Type:         Private
@@ -621,23 +816,15 @@ ASN1
 #----------------------------------------------------------------
 sub bcd_to_hexa
 {
-	my $i;
 	my $in=shift;
-	my $out="";
-	my $out_tmp;
-	for ($i=0;$i<length($in);$i++) {
-		my $ascii=ord(substr($in,$i,1));
-		$out_tmp=sprintf ("%02x",$ascii);
-		$out=$out.$out_tmp;
-	}
-	return $out;
+	unpack("H*",$in);
 }
 
 
 #----------------------------------------------------------------
 # Function:     bcd_to_asc
 # Description:  Converts the input binary format from the TAP/RAP
-#               files into ascii.
+#               files into decimal.
 # Parameters:   binary_string
 # Returns:      ascii value
 # Type:         Private
@@ -645,18 +832,13 @@ sub bcd_to_hexa
 #----------------------------------------------------------------
 sub bcd_to_asc
 {
-	my $i;
 	my $in=shift;
 	my $out="";
-	my $out_tmp;
-	for ($i=0;$i<length($in);$i++) {
-		my $ascii=ord(substr($in,$i,1));
-		$out_tmp=sprintf ("%03d",$ascii);
-		$out=$out.$out_tmp;
+	for (my $i=0;$i<length($in);$i++) {
+		$out.=sprintf("%03d", ord(substr($in,$i,1)));
 	}
 	return $out;
 }
-
 
 
 #----------------------------------------------------------------
@@ -697,7 +879,7 @@ sub _get_bci
 		read FILE, $bci_size, 1;
 		read FILE, $bci_body, bcd_to_asc($bci_size); # To read the body we convert the hexa size into ascii
 
-	} elsif ( $type eq "NOT" ) {
+	} elsif ( $type eq "NOT" || $type eq "ACK" ) {
 
 		read FILE, $bci_tag, 1;
 		read FILE, $bci_size, 1;
@@ -710,6 +892,11 @@ sub _get_bci
 		read FILE, $bci_tag, 3;
 		read FILE, $bci_size, 1;
 		read FILE, $bci_body, bcd_to_asc($bci_size); # To read the body we convert the hexa size into ascii
+
+	} else {
+
+		# This should never happen
+		die ("Abnormal termination, File type not defined");
 
 	}
 
@@ -760,126 +947,54 @@ sub _get_file_version
 	my $bci_buf;
 	my $bci_dec;
 
-	
 	## 
-	## 2.1 We try first with a normal TAP structure.
+	## 2.1 Loop to try to match the type of the file
+	## 
 
-	my $guess_file_type="TAP";
+	foreach my $guess_file_type (keys %FILE_TYPES) {
 
+		## 2.1.1 We prepare the structure to use, 
 
-	## 2.1.1 We prepare the structure to use, In this case the BatchControlInfo one.
-
-	$asn=_prepare_bci() || return undef; # Here the declaration of the ASN.1 for the BCI is prepared
-	$find_string="BatchControlInfo";
-
-
-	## 2.1.2 We need just this part of the structure for the version and release.
-
-	$bci_asn = $asn->find($find_string) or do { $self->{error}=$asn->error; return undef };
+		no strict 'refs';
+		$asn=&{$FILE_TYPES{$guess_file_type}{PREPARE_FUNC}}() || return undef; # Here the declaration of the ASN.1 is prepared
+		$find_string= $FILE_TYPES{$guess_file_type}{FIND_STRING};
 
 
-	## 2.1.3 The fisical "header" of the file is dump into $bci_buf
-
-	$bci_buf = $self->_get_bci($guess_file_type) || return undef;
-
-
-	## 2.1.4 Decode file buffer into the ASN1 tree.
-
-	$bci_dec = $bci_asn->decode($bci_buf);
-
-
-	## 2.1.5 If error let's do next try.
-
-	if ( $bci_asn->error ) {
-
-		
-		## 
-		## 2.2 Because the structure of the notification files is different we also try it.
-
-		my $guess_file_type="NOT";
-
-
-		## 2.2.1 We prepare the structure to use, In this case the Notification one.
-
-		$asn=_prepare_not() || return undef; # Here the declaration of the ASN.1 for the BCI is prepared
-		$find_string="Notification";
-
-
-		## 2.2.2 We need just this part of the structure for the version and release.
+		## 2.1.2 We need just this part of the structure for the version and release.
 
 		$bci_asn = $asn->find($find_string) or do { $self->{error}=$asn->error; return undef };
 
-
-		## 2.2.3 The fisical "header" of the file is dump into $bci_buf
+		
+		## 2.1.3 The fisical "header" of the file is dump into $bci_buf
 
 		$bci_buf = $self->_get_bci($guess_file_type) || return undef;
 
 
-		## 2.2.4 Decode file buffer into the ASN1 tree.
+		## 2.1.4 Decode file buffer into the ASN1 tree.
 
 		$bci_dec = $bci_asn->decode($bci_buf);
 
 
-		## 2.2.5 If error let's do next try.
+		## 2.1.5 If error let's do next try.
 
-		if ( $bci_asn->error ) {
-
-
-			## 
-			## 2.3 At the end we try with the RAP structure.
-
-			my $guess_file_type="RAP";
-
-
-			## 2.3.1 We prepare the structure to use, In this case the RapBatchControlInfo one.
-
-			$asn=_prepare_rbci() || return undef; # Here the declaration of the ASN.1 for the BCI is prepared
-			$find_string="RapBatchControlInfo";
-
-
-			## 2.3.2 We need just this part of the structure for the version and release.
-
-			$bci_asn = $asn->find($find_string) or do { $self->{error}=$asn->error; return undef };
-
-
-			## 2.3.3 The fisical "header" of the file is dump into $bci_buf
-
-			$bci_buf = $self->_get_bci($guess_file_type) || return undef;
-
-
-			## 2.3.4 Decode file buffer into the ASN1 tree.
-
-			$bci_dec = $bci_asn->decode($bci_buf);
-
-
-			## 2.3.5 Ok, no more tries.
-
-			if ( $bci_asn->error ) {
-
-
-				## 
-				## 2.4 If nothing works we show the error message.
-
-				$self->{error}="File Type Unknown or Failed to get it: ".$bci_asn->error;
-				croak $self->error();
-
-			} else {
-
-				$self->file_type("RAP");
-
-			}
-		} else {
-
-			$self->file_type("TAP");
-
+		if ( ! $bci_asn->error ) {
+			$self->file_type($FILE_TYPES{$guess_file_type}{REAL_FILE_TYPE});
+			last;
 		}
-
-	} else {
-
-		$self->file_type("TAP");
 
 	}
 
+	if ( $bci_asn->error ) {
+
+
+		## 
+		## 2.2 If nothing works we show the error message.
+
+		$self->{error}="File Type Unknown or Failed to get it: ".$bci_asn->error;
+		croak $self->error();
+
+	}
+	
 	my $file_type=$self->file_type;
 
 
@@ -890,12 +1005,21 @@ sub _get_file_version
 	if ( $file_type eq "TAP" ) {
 		$self->{_version}=$bci_dec->{'specificationVersionNumber'};
 		$self->{_release}=$bci_dec->{'releaseVersionNumber'};
-	} else { # is RAP
+	} elsif ( $file_type eq "RAP" ) { 
 		$self->{_version}=$bci_dec->{'rapSpecificationVersionNumber'};
 		$self->{_release}=$bci_dec->{'rapReleaseVersionNumber'};
 		$self->{_supl_version}=$bci_dec->{'specificationVersionNumber'};
 		$self->{_supl_release}=$bci_dec->{'releaseVersionNumber'};
+		if (! $self->{_supl_release} or ! $self->{_supl_version} ) {
+			$self->{error}="'specificationVersionNumer' or 'releaseVersionNumber' not found in RAP File: ";
+			croak $self->error();
+		}
+	} else { # is ACK (and has no version)
+		$self->{_version}=0;
+		$self->{_release}=0;
 	}
+
+	1;
 
 }
 
@@ -998,17 +1122,16 @@ sub _select_asn_struct
 
 	close FILE;
 
-	# Following algorithm will strip the chane ",\n..." since the three dots and a comma
+	# Following algorithm will strip the chain ",\n..." since the three dots and a comma
 	# in the last element is not supported by Convert::ASN1
 
 
 	while($spec_buf_in_tmp =~ /(?:
-			(,(?:\s|\t)*?\n(?:\s|\t)*?\.\.\.(?:\s|\t)*?\n)
+			(,[^\n]*\n(?:\s|\t)*?\.\.\.[^\n,]*\n)
 		|
-			((?:\s|\t)*?\.\.\.(?:\s|\t)*?,(?:\s|\t)*?\n)
+			([\s|\t]*?\.\.\.(?:\s|\t)*?,[^\n]*\n)
 		|
-			(.*?(?=,(?:\s|\t)*?\n(?:\s|\t)*?\.\.\.(?:\s|\t)*?\n|^(?:\s|\t)*?\.\.\.(?:\s|\t)*?,(?:\s|\t)*?\n)?)
-
+			(.*?(?=,[^\n]*\n(?:\s|\t)*?\.\.\.[^\n,]*\n|^[\s|\t]*?\.\.\.(?:\s|\t)*?,[^\n]*\n)?)
 	)/sgxo) {
 		if (defined $1 or defined $2) {
 			$spec_buf_in=$spec_buf_in."\n";
@@ -1158,6 +1281,7 @@ sub encode {
 	## 
 
 	open FILE_OUT, ">$filename" or do { $self->{error}="$! writing $filename"; croak $self->error() };
+	binmode FILE_OUT;
 	print FILE_OUT $buf_out ;
 	close FILE_OUT;
 }

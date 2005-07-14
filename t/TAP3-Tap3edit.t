@@ -23,7 +23,7 @@ $filename="CDOPER1OPER200001";
 
 $notific_struct = {
     "notification" => {
-      "releaseVersionNumber" => 2,
+      "releaseVersionNumber" => 10,
       "transferCutOffTimeStamp" => {
         "localTimeStamp" => "20040101000000",
         "utcTimeOffset" => "+0000"
@@ -48,7 +48,7 @@ ok($tap3=TAP3::Tap3edit->new());
 
 ok($tap3->file_type("TAP"));
 ok($tap3->version(3));
-ok($tap3->release(2));
+ok($tap3->release(10));
 
 ok($tap3->structure($notific_struct));
 ok($tap3->encode($filename) || die $tap3->error());
