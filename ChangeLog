@@ -1,8 +1,16 @@
+2005.07.31 00:00  Javier Gutierrez
+
+	* New algorithm for recognition of files, because of too many problems with 
+	  indefinite length.
+
+	New release 0.28
+
 2005.07.14 00:00  Javier Gutierrez
 
 	* Improvement of data conversion.
-	* Support for Acknowledment Files. Sorry I did not test this new feature, but I have no AC files. 
-	  If you are willing to test this feature and let me know the results I'll be glad.
+	* Support for Acknowledment Files. Sorry I did not test this new feature, but 
+	  I have no AC files. If you are willing to test this feature and let me know 
+	  the results I'll be glad.
 	* Better support for recognition of File types.
 	* Solved problem of encoding under Windows. Thanks Denis.
 	* Better support for ellipsis under Windows.
@@ -30,7 +38,8 @@
 
 	* Added some tests to the package.
 	* Support for notification files.
-	* The recognition of the file type is now automatic. Does not depend on the filename anymore.
+	* The recognition of the file type is now automatic. Does not depend on the 
+	  filename anymore.
 
 	This will result on the release 0.24
 
