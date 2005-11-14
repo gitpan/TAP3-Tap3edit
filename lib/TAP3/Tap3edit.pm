@@ -2,6 +2,8 @@
 # designed to decode, modify and encode Roaming GSM TAP/RAP 
 # files
 # 
+# $Id: Tap3edit.pm,v 1.11 2005/11/12 09:43:06 javier Exp $
+# 
 # Copyright (c) 2005 Javier Gutierrez. All rights reserved.
 # Email Address <javier.gutierrez@tap3edit.com>. 
 # This program is free software; you can redistribute 
@@ -45,7 +47,7 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.28";
+	$VERSION = "0.29";
 }
 
 
@@ -714,11 +716,11 @@ sub decode {
 	## 3. We open and read all the TAP/RAP file at once.
 	##
 
-	($size) = (stat($filename))[7] or do { $self->{error}="$! reading $filename"; return undef };
-	open FILE, "<$filename" or do { $self->{error}="$! opening $filename"; return undef };
-	binmode FILE;
-	read FILE, $buf_in, $size;
-	close FILE;
+	my $FILE;
+	open $FILE, "<$filename" or do { $self->{error}="$! opening $filename"; return undef };
+	binmode $FILE;
+	asn_read ($FILE, $buf_in);
+	close $FILE;
 
 
 	##
