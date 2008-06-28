@@ -1,7 +1,7 @@
 name: TAP3-Tap3edit
-version: 0.29
-abstract: Decodes, modifies and encodes TAP 3 files
-author: Javier Gutierrez <javier.gutierrez@tap3edit.com>
+version: 0.30
+abstract: Decodes, modifies and encodes TAP3 files
+author: Javier Gutierrez <jgutierrez at tap3edit dot com>
 license: perl
 distribution_type: module
 requires:

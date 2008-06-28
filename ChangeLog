@@ -1,6 +1,14 @@
+2008.06.14 00:00  Javier Gutierrez
+
+    * Fix bug on selecting the TAP release when opening a RAP file. Thanks Emil.
+    * Fix support for ellipsis on RAP files.
+    * Added version 1.4 of the RAP definitions provided also by Emil.
+
+    New release 0.30
+
 2005.11.12 00:00  Javier Gutierrez
 
-	* Fixed bug when there is unused bytes (trash) at the end of a tapfile. Thanks Julio.
+	* Fix bug when there is unused bytes (trash) at the end of a tapfile. Thanks Julio.
 
 	New release 0.29
 

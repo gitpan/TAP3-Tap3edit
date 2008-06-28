@@ -2,10 +2,10 @@
 # designed to decode, modify and encode Roaming GSM TAP/RAP 
 # files
 # 
-# $Id: Tap3edit.pm,v 1.11 2005/11/12 09:43:06 javier Exp $
+# $Id: Tap3edit.pm,v 1.13 2008/06/27 17:37:28 javier Exp $
 # 
-# Copyright (c) 2005 Javier Gutierrez. All rights reserved.
-# Email Address <javier.gutierrez@tap3edit.com>. 
+# Copyright (c) 2004-2008 Javier Gutierrez. All rights 
+# reserved.
 # This program is free software; you can redistribute 
 # it and/or modify it under the same terms as Perl itself.
 # 
@@ -47,7 +47,7 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.29";
+	$VERSION = "0.30";
 }
 
 
@@ -503,7 +503,7 @@ sub _get_file_version
 				$self->{_version}=$rap_version;
 				$self->{_release}=$rap_release;
 				$self->{_supl_version}=$version;
-				$self->{_supl_release}=$version;
+				$self->{_supl_release}=$release;
 				$self->{_file_type}="RAP";
 			}
 		}
@@ -620,6 +620,23 @@ sub _select_asn_struct
 
 	close FILE;
 
+	## 
+	## 2.2. If it is a RAP file, we read as well the specification of its tap file.
+	## 
+
+	if ( $self->file_type eq "RAP" ) {
+		($size) = (stat($self->supl_spec_file))[7] or do { $self->{error}="$! reading ".$self->supl_spec_file; return undef };
+		open FILE, "<".$self->supl_spec_file or do { $self->{error}="$! opening ".$self->supl_spec_file; return undef };
+		while (<FILE>) {
+			if ( /^...Structure of a ... batch/.../END/ ) {
+				if ( $_ !~ m/Structure of a Tap batch/ and $_ !~ m/END/ ) {
+					$spec_buf_in_tmp=$spec_buf_in_tmp.$_;
+				}
+			}
+		}
+		close FILE;
+	}
+
 	# Following algorithm will strip the chain ",\n..." since the three dots and a comma
 	# in the last element is not supported by Convert::ASN1
 
@@ -636,23 +653,6 @@ sub _select_asn_struct
 		} else {
 			$spec_buf_in=$spec_buf_in."$+";
 		}
-	}
-
-	## 
-	## 2.2. If it is a RAP file, we read as well the specification of its tap file.
-	## 
-
-	if ( $self->file_type eq "RAP" ) {
-		($size) = (stat($self->supl_spec_file))[7] or do { $self->{error}="$! reading ".$self->supl_spec_file; return undef };
-		open FILE, "<".$self->supl_spec_file or do { $self->{error}="$! opening ".$self->supl_spec_file; return undef };
-		while (<FILE>) {
-			if ( /^...Structure of a ... batch/.../END/ ) {
-				if ( $_ !~ m/Structure of a Tap batch/ and $_ !~ m/END/ ) {
-					$spec_buf_in=$spec_buf_in.$_;
-				}
-			}
-		}
-		close FILE;
 	}
 
 	##

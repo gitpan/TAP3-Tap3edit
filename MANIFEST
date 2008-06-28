@@ -15,6 +15,7 @@ inc/Test/More.pm
 lib/TAP3/Spec/RAP0101.asn	Specification RAP1.1
 lib/TAP3/Spec/RAP0102.asn	Specification RAP1.2
 lib/TAP3/Spec/RAP0103.asn	Specification RAP1.3
+lib/TAP3/Spec/RAP0104.asn	Specification RAP1.4
 lib/TAP3/Spec/TAP0301.asn	Specification TAP3.1
 lib/TAP3/Spec/TAP0302.asn	Specification TAP3.2
 lib/TAP3/Spec/TAP0303.asn	Specification TAP3.3

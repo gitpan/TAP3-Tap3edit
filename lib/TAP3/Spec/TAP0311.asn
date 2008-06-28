@@ -338,7 +338,7 @@ CallOriginator ::= [APPLICATION 41]  SEQUENCE
 ...
 }
 
-CallReference ::= [APPLICATION 45] OCTET STRING --(SIZE(1..8))
+CallReference ::= [APPLICATION 45] BCDString --(SIZE(1..8))
 
 CallTypeGroup ::= [APPLICATION 258] SEQUENCE
 {
@@ -1437,5 +1437,11 @@ NumberString ::= OCTET STRING
 --
 PercentageRate ::= INTEGER 
 
+-- Dummy entries to be compatible with RAP0103.asn
+VasCode ::= INTEGER
+VasShortDescription ::= INTEGER
+VasDescription ::= INTEGER
+VasInfoList ::= INTEGER
+VASInformationError ::= INTEGER
 
 END

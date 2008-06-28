@@ -197,15 +197,19 @@ Dump the tree of the complete TAP file. You can see the complete structure of th
 
 =head1 REQUIRED MODULES
 
-Convert::ASN1 from Graham Barr <gbarr@pobox.com>, which is the main motor of Tap3edit.
+L<Convert::ASN1>
+
+=head1 SEE ALSO
+
+http://www.xintec.com
 
 =head1 AUTHOR
 
-Javier Gutierrez <javier.gutierrez@tap3edit.com>
+Javier Gutierrez <jgutierrez at tap3edit dot com>
 
 =head1 COPYRIGHT
 
-Copyright (c) 2005 Javier Gutierrez. All rights reserved. <javier.gutierrez@tap3edit.com> This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+Copyright (c) 2004-2008 Javier Gutierrez. All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 This program contains TAP and RAP ASN.1 Specifications. The ownership of the TAP/RAP ASN.1 Specifications belongs to the GSM MoU Association (http://www.gsm.org) and should be used under following conditions:
 

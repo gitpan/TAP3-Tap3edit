@@ -1,3 +1,24 @@
+-- http://www.tap3edit.com
+--
+-- Copyright (c) 2000 GSM MoU Association. Restricted - Con≠
+-- fidential Information.  Access to and distribution of this
+-- document is restricted to the persons listed under the
+-- heading Security Classification Category*. This document
+-- is confidential to the Association and is subject to copy≠
+-- right protection.  This document is to be used only for
+-- the purposes for which it has been supplied and informa≠
+-- tion contained in it must not be disclosed or in any other
+-- way made available, in whole or in part, to persons other
+-- than those listed under Security Classification Category*
+-- without the prior written approval of the Association. The
+-- GSM MoU Association (‚Association‚) makes no representa≠
+-- tion, warranty or undertaking (express or implied) with
+-- respect to and does not accept any responsibility for, and
+-- hereby disclaims liability for the accuracy or complete≠
+-- ness or timeliness of the information contained in this
+-- document. The information contained in this document may
+-- be subject to change without prior notice.
+--
 --
 -- The following ASN.1 specification defines the abstract 
 -- syntax for the Rejects and Returns Returned Accounts Procedure.  
@@ -7,10 +28,10 @@
 --   (2) Structure of the individual RAP records 
 --   (3) RAP data items and groups of data items
 --
-
-RAP-0103  DEFINITIONS IMPLICIT TAGS  ::= 
-
-BEGIN 
+-- 
+-- RAP-0103  DEFINITIONS IMPLICIT TAGS  ::= 
+-- 
+-- BEGIN 
 --
 -- NOTE: As the RAP can be used to report rejections of any
 --       valid TAP release this specification does not indicate
@@ -20,18 +41,18 @@ BEGIN
 --       TAP release version: e.g. 02, 04, 10, 11, ...
 --       making all TAP fields OPTIONAL
 --
-IMPORTS  AbsoluteAmount, AccountingInfo, AuditControlInfo,
-         BatchControlInfo, CallEventDetail, DateTimeLong,
-         FileSequenceNumber, FileTypeIndicator,
-         MessageDescription, MessageDescriptionCode, NetworkInfo,
-         Notification, NumberString, OperatorSpecInformation,
-         PlmnId, RapFileSequenceNumber, Recipient, ReleaseVersionNumber,
-         Sender, SpecificationVersionNumber
+-- IMPORTS  AbsoluteAmount, AccountingInfo, AuditControlInfo,
+--          BatchControlInfo, CallEventDetail, DateTimeLong,
+--          FileSequenceNumber, FileTypeIndicator,
+--          MessageDescription, MessageDescriptionCode, NetworkInfo,
+--          Notification, NumberString, OperatorSpecInformation,
+--          PlmnId, RapFileSequenceNumber, Recipient, ReleaseVersionNumber,
+--          Sender, SpecificationVersionNumber
 --       For TAP releases earlier than TAP3.11
 --       uncomment the following line
-         ,VasCode, VasDescription, VasShortDescription
-FROM TAP-03XX;
-
+--          ,VasCode, VasDescription, VasShortDescription
+-- FROM TAP-03XX;
+-- 
 --
 -- Structure of a RAP batch 
 --
@@ -261,4 +282,4 @@ errorDetail		ErrorDetailList
   	errorDetail		ErrorDetailList
   }
 
-END
+-- END
