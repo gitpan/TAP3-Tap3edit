@@ -57,7 +57,7 @@ DataInterChange ::= CHOICE
 }
 
 -- Batch Control Information must always, both logically and physically, be the
--- first group/item within Transfer Batch - this ensures that the TAP release 
+-- first group/item within Transfer Batch -- this ensures that the TAP release 
 -- version can be readily identified.  Any new groups/items required may be 
 -- inserted at any point after Batch Control Information
 
@@ -71,11 +71,6 @@ TransferBatch ::= [APPLICATION 1] SEQUENCE
     auditControlInfo       AuditControlInfo            OPTIONAL, -- *m.m.
 ...
 }
-
--- The logical and physical structures must not be changed up to and including the 
--- Release Version Number - this ensures that the TAP release version can be readily 
--- identified.  Any new groups/items required may be inserted at any point after 
--- Release Version Number
 
 Notification ::= [APPLICATION 2] SEQUENCE
 {
@@ -110,14 +105,6 @@ CallEventDetail ::= CHOICE
 --
 -- Structure of the individual Tap records
 --
-
--- The logical and physical structures must not be changed up to and including the 
--- Release Version Number - this ensures that the TAP release version can be readily 
--- identified.  Any new groups/items required may be inserted at any point after 
--- Release Version Number.
--- Please note that this implies also that the ‘SEQUENCE OF’ construct in the ASN.1 
--- specification cannot be replaced by ‘SET OF’ within the Transfer Batch, 
--- Notification and Batch Control Information.
 
 BatchControlInfo ::= [APPLICATION 4] SEQUENCE
 {
@@ -338,7 +325,7 @@ CallOriginator ::= [APPLICATION 41]  SEQUENCE
 ...
 }
 
-CallReference ::= [APPLICATION 45] BCDString --(SIZE(1..8))
+CallReference ::= [APPLICATION 45] OCTET STRING --(SIZE(1..8))
 
 CallTypeGroup ::= [APPLICATION 258] SEQUENCE
 {
@@ -591,7 +578,7 @@ DateTime ::= SEQUENCE
      --       YY  =  year     ('00' - '99')
      --       MM  =  month    ('01', '02', ... , '12')
      --       DD  =  day      ('01', '02', ... , '31')
-     --       hh  =  hour     ('00', '01', ... , '24')
+     --       hh  =  hour     ('00', '01', ... , '23')
      --       mm  =  minutes  ('00', '01', ... , '59')
      --       ss  =  seconds  ('00', '01', ... , '59')
      -- 
@@ -1126,16 +1113,19 @@ TaxableAmount ::= [APPLICATION 398] AbsoluteAmount
 
 Taxation ::= [APPLICATION 216] SEQUENCE
 {
-    taxCode     TaxCode     OPTIONAL, -- *m.m.
-    taxType     TaxType     OPTIONAL, -- *m.m.
-    taxRate     TaxRate     OPTIONAL,
-    chargeType  ChargeType  OPTIONAL,
+    taxCode      TaxCode      OPTIONAL, -- *m.m.
+    taxType      TaxType      OPTIONAL, -- *m.m.
+    taxRate      TaxRate      OPTIONAL,
+    chargeType   ChargeType   OPTIONAL,
+    taxIndicator TaxIndicator OPTIONAL,
 ...
 }
 
 TaxationList ::= [APPLICATION 211]  SEQUENCE OF Taxation
 
 TaxCode ::= [APPLICATION 212] INTEGER
+
+TaxIndicator ::= [APPLICATION 432] AsciiString --(SIZE(1))
 
 TaxInformation ::= [APPLICATION 213] SEQUENCE
 {
@@ -1146,6 +1136,9 @@ TaxInformation ::= [APPLICATION 213] SEQUENCE
 }
 
 TaxInformationList ::= [APPLICATION 214]  SEQUENCE OF TaxInformation
+
+-- The TaxRate item is of a fixed length to ensure that the full 5 
+-- decimal places is provided.
 
 TaxRate ::= [APPLICATION 215] NumberString --(SIZE(7))
 
@@ -1388,7 +1381,7 @@ Code ::= INTEGER
 --    NumberString ::= NumericString
 --
 --    AsciiString contains visible ISO 646 characters.
---    Leading and trailing spaces shall be discarded during processing.
+--    Leading and trailing spaces must be discarded during processing.
 --    An AsciiString cannot contain only spaces.
 
 AsciiString ::= OCTET STRING
@@ -1398,7 +1391,7 @@ AsciiString ::= OCTET STRING
 -- several digits from 0 through 9, a, b, c, d, e.
 -- Two digits are encoded per octet.  The four leftmost bits of the octet represent
 -- the first digit while the four remaining bits represent the following digit.  
--- A single f shall be used as a filler when the total number of digits to be 
+-- A single f must be used as a filler when the total number of digits to be 
 -- encoded is odd.
 -- No other filler is allowed.
 

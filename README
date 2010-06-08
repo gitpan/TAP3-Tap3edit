@@ -61,15 +61,16 @@ Carp
 
 COPYRIGHT
 
-Copyright (c) 2004-2008 Javier Gutierrez. All rights reserved. 
+Copyright (c) 2004-2010 Javier Gutierrez. All rights reserved. 
 Email Address: <jgutierrez at tap3edit dot com>
 This program is free software; you can redistribute it 
 and/or modify it under the same terms as Perl itself.
 
-This program contains TAP and RAP ASN.1 Specification. The
-ownership of the TAP/RAP ASN.1 Specifications belong to
-the GSM MoU Association (http://www.gsm.org) and should be
-used under following conditions:
+This program contains TAP, RAP and NRTRDE ASN.1 
+Specification. The ownership of the TAP/RAP ASN.1 
+Specifications belong to the GSM MoU Association 
+(http://www.gsm.org) and should be used under following 
+conditions:
 
 Copyright (c) 2000 GSM MoU Association. Restricted − Con­
 fidential Information.  Access to and distribution of this

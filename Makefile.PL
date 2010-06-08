@@ -4,11 +4,12 @@ use inc::Module::Install;
 
 name('TAP3-Tap3edit');
 abstract('Decodes, modifies and encodes TAP 3 files');
-author('Javier Gutierrez <javier.gutierrez@tap3edit.com>');
+author('Javier Gutierrez <jgutierrez@tap3edit.com>');
 version_from('lib/TAP3/Tap3edit.pm');
 license('perl');
 
-requires( perl => '5.004' );
+perl_version('5.005');
+requires( perl => '5.005' );
 requires( 'Convert::ASN1' );
 
 clean_files(qw(y.tab.pl.bak));

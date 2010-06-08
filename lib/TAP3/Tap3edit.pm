@@ -1,18 +1,19 @@
 # Package Tap3edit (http://www.tap3edit.com)
-# designed to decode, modify and encode Roaming GSM TAP/RAP 
-# files
+# designed to decode, modify and encode Roaming GSM TAP/RAP/
+# NRT files
 # 
-# $Id: Tap3edit.pm,v 1.13 2008/06/27 17:37:28 javier Exp $
+# $Id: Tap3edit.pm,v 1.13 2010/06/08 20:50:14 javier Exp $
 # 
-# Copyright (c) 2004-2008 Javier Gutierrez. All rights 
+# Copyright (c) 2004-2010 Javier Gutierrez. All rights 
 # reserved.
 # This program is free software; you can redistribute 
 # it and/or modify it under the same terms as Perl itself.
 # 
-# This program contains TAP and RAP ASN.1 Specification. The
-# ownership of the TAP/RAP ASN.1 Specifications belong to
-# the GSM MoU Association (http://www.gsm.org) and should be
-# used under following conditions:
+# This program contains TAP, RAP and NRTRDE ASN.1 
+# Specification. The ownership of the TAP/RAP/NRTRDE ASN.1 
+# Specifications belong to the GSM MoU Association 
+# (http://www.gsm.org) and should be used under following 
+# conditions:
 # 
 # Copyright (c) 2000 GSM MoU Association. Restricted − Con­
 # fidential Information.  Access to and distribution of this
@@ -47,7 +48,7 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.30";
+	$VERSION = "0.31";
 }
 
 
@@ -66,7 +67,7 @@ sub new {
 	$self->{_release} = undef;
 	$self->{_supl_version} = undef; 		# Tap version inside the RAP file
 	$self->{_supl_release} = undef; 		# Tap release inside the RAP file
-	$self->{_file_type} = undef;			# TAP or RAP
+	$self->{_file_type} = undef;			# TAP, RAP or NRT
 	$self->{error} = undef;
 	bless ($self, $class);
 	return $self;
@@ -75,8 +76,8 @@ sub new {
 
 #----------------------------------------------------------------
 # Method:       structure
-# Description:  Contains the structure of the TAP/RAP file into 
-#               a HASH 
+# Description:  Contains the structure of the TAP/RAP/NRT file 
+#               into a HASH 
 # Parameters:   N/A 
 # Returns:      HASH
 # Type:         Public
@@ -92,7 +93,7 @@ sub structure {
 #----------------------------------------------------------------
 # Method:       version
 # Description:  contains and updates the main version of the 
-#               TAP/RAP file
+#               TAP/RAP/NRT file
 # Parameters:   N/A
 # Returns:      SCALAR: version number
 # Type:         Public
@@ -137,7 +138,7 @@ sub supl_version {
 #----------------------------------------------------------------
 # Method:       release
 # Description:  contains and updates the main release of the 
-#               TAP/RAP file
+#               TAP/RAP/NRT file
 # Parameters:   N/A
 # Returns:      SCALAR: release number
 # Type:         Public
@@ -182,9 +183,9 @@ sub supl_release {
 #----------------------------------------------------------------
 # Method:       file_type
 # Description:  contains and updates the type of the file
-#               the values can be: TAP/RAP.
+#               the values can be: TAP/RAP/NRT.
 # Parameters:   N/A
-# Returns:      SCALAR: file type ("RAP","TAP")
+# Returns:      SCALAR: file type ("RAP","TAP","NRT")
 # Type:         Public
 # Restrictions: N/A
 #----------------------------------------------------------------
@@ -194,7 +195,7 @@ sub file_type {
 		if ( ! $self->{_file_type} ) { 
 			my $file_type = shift;
 
-			unless ($file_type =~ /^[TR]AP$/) {
+			unless ($file_type =~ /^[TR]AP$|^NRT$/) {
 				croak("Unsupported File Type $file_type");
 			}
 
@@ -210,9 +211,9 @@ sub file_type {
 
 #----------------------------------------------------------------
 # Method:       get_info
-# Description:  gets the basic information of the TAP/RAP files:
-#               version, release, supl_version (for RAP files),
-#               supl_release (for RAP files), file type.
+# Description:  gets the basic information of the TAP/RAP/NRT
+#               files: version, release, supl_version (for RAP 
+#               files), supl_release (for RAP files), file type.
 # Parameters:   filename
 # Returns:      N/A
 # Type:         Public
@@ -228,7 +229,7 @@ sub get_info {
 
 #----------------------------------------------------------------
 # Method:       _filename
-# Description:  contains and updates the name of the TAP/RAP
+# Description:  contains and updates the name of the TAP/RAP/NRT
 #               files
 # Parameters:   filename
 # Returns:      filename
@@ -278,7 +279,7 @@ sub supl_spec_file {
 #----------------------------------------------------------------
 # Method:       _dic_decode
 # Description:  contains and updates the HASH which stores
-#               the decoded information from the TAP/RAP file.
+#               the decoded information from the TAP/RAP/NRT file.
 #               This variable is also used for the method:
 #               "structure".
 # Parameters:   HASH
@@ -347,8 +348,8 @@ sub _asn_path {
 
 #----------------------------------------------------------------
 # Function:     bcd_to_hexa
-# Description:  Converts the input binary format from the TAP/RAP
-#               files into Hexadecimal string.
+# Description:  Converts the input binary format from the 
+#               TAP/RAP/NRT files into Hexadecimal string.
 # Parameters:   binary_string
 # Returns:      hexadecimal value
 # Type:         Private
@@ -363,8 +364,8 @@ sub bcd_to_hexa
 
 #----------------------------------------------------------------
 # Function:     bcd_to_asc
-# Description:  Converts the input binary format from the TAP/RAP
-#               files into decimal.
+# Description:  Converts the input binary format from the 
+#               TAP/RAP/NRT files into decimal.
 # Parameters:   binary_string
 # Returns:      ascii value
 # Type:         Private
@@ -384,8 +385,8 @@ sub bcd_to_asc
 
 #----------------------------------------------------------------
 # Method:       _get_file_version
-# Description:  sets the file version/release of the TAP/RAP file
-#               by matching patterns
+# Description:  sets the file version/release of the TAP/RAP/NRT 
+#               file by matching patterns
 # Parameters:   N/A
 # Returns:      N/A
 # Type:         Private
@@ -436,7 +437,7 @@ sub _get_file_version
 	## 
 
 	while ($buf_in =~ /(?:
-			(^61)			(?# For Tap files)
+			(^61.+5f814405)		(?# For Tap files)
 		|
 			(^62)			(?# For Notification files)
 		|
@@ -451,6 +452,10 @@ sub _get_file_version
 			(?:5f842001)(..)	(?# Will match: RapSpecificationVersionNumber )
 		|
 			(?:5f841f01)(..)	(?# Will match: RapReleaseVersionNumber )
+		|
+			(^61.+5f2901)(..)	(?# For NRTRDE files, and SpecificationVersionNumber for NRTRDE)
+		|
+			(?:5f2501)(..)		(?# Will match: ReleaseVersionNumber for NRTRDE )
 		|
 			.
 	)/sgxo ) {
@@ -477,6 +482,15 @@ sub _get_file_version
 		}
 		if (defined $8) {
 			$rap_release=ord(pack("H*",$8));
+		}
+		if (defined $9) {
+			$file_type="NRT";
+		}
+		if (defined $10) {
+			$version=ord(pack("H*",$10));
+		}
+		if (defined $11) {
+			$release=ord(pack("H*",$11));
 		}
 	}
 
@@ -513,6 +527,15 @@ sub _get_file_version
 		$self->{_supl_version}=0;
 		$self->{_supl_release}=0;
 		$self->{_file_type}="RAP";
+	} elsif ($file_type eq "NRT") {
+		if (! $release or ! $version ) {
+			$self->{error}="'specificationVersionNumer' or 'releaseVersionNumber' not found in NRT File";
+			croak $self->error();
+		} else {
+			$self->{_version}=$version;
+			$self->{_release}=$release;
+			$self->{_file_type}="NRT";
+		}
 	} else {
 		$self->{error}="Unknown File format. Cannot decode.";
 		croak $self->error();
@@ -611,8 +634,8 @@ sub _select_asn_struct
 	open FILE, "<".$self->spec_file or do { $self->{error}="$! opening ".$self->spec_file; return undef };
 
 	while (<FILE>) {
-		if ( /^...Structure of a ... batch/.../END/ ) {
-			if ( $_ !~ m/Structure of a Tap batch/ and $_ !~ m/END/ ) {
+		if ( /^...Structure of a (... batch|...... record)/.../END/ ) {
+			if ( $_ !~ m/Structure of a (Tap batch|NRTRDE)/ and $_ !~ m/END/ ) {
 				$spec_buf_in_tmp=$spec_buf_in_tmp.$_;
 			}
 		}
@@ -670,6 +693,8 @@ sub _select_asn_struct
 	my $dic_asn;
 	if ( $self->file_type eq "TAP" ) {
 		$dic_asn = $asn->find('DataInterChange') or do { $self->{error}=$asn->error; return undef };
+	} elsif ( $self->file_type eq "NRT" ) {
+		$dic_asn = $asn->find('Nrtrde') or do { $self->{error}=$asn->error; return undef };
 	} else {
 		$dic_asn = $asn->find('RapDataInterChange') or do { $self->{error}=$asn->error; return undef };
 	}
@@ -681,7 +706,7 @@ sub _select_asn_struct
 
 #----------------------------------------------------------------
 # Method:       decode
-# Description:  decodes the TAP/RAP file into a HASH for its
+# Description:  decodes the TAP/RAP/NRT file into a HASH for its
 #               later editing.
 # Parameters:   filename
 # Returns:      N/A
@@ -713,7 +738,7 @@ sub decode {
 
 
 	##
-	## 3. We open and read all the TAP/RAP file at once.
+	## 3. We open and read all the TAP/RAP/NRT file at once.
 	##
 
 	my $FILE;
@@ -736,7 +761,8 @@ sub decode {
 
 #----------------------------------------------------------------
 # Method:       encode
-# Description:  encode the HASH structure into a new TAP/RAP file
+# Description:  encode the HASH structure into a new TAP/RAP/NRT 
+#               file 
 # Parameters:   filename
 # Returns:      N/A
 # Type:         Public
