@@ -1,24 +1,3 @@
--- http://www.tap3edit.com
---
--- Copyright (c) 2000 GSM MoU Association. Restricted ¿ Con­
--- fidential Information.  Access to and distribution of this
--- document is restricted to the persons listed under the
--- heading Security Classification Category*. This document
--- is confidential to the Association and is subject to copy­
--- right protection.  This document is to be used only for
--- the purposes for which it has been supplied and informa­
--- tion contained in it must not be disclosed or in any other
--- way made available, in whole or in part, to persons other
--- than those listed under Security Classification Category*
--- without the prior written approval of the Association. The
--- GSM MoU Association (âAssociationâ) makes no representa­
--- tion, warranty or undertaking (express or implied) with
--- respect to and does not accept any responsibility for, and
--- hereby disclaims liability for the accuracy or complete­
--- ness or timeliness of the information contained in this
--- document. The information contained in this document may
--- be subject to change without prior notice.
---
 --
 -- The following ASN.1 specification defines the abstract syntax for 
 --
@@ -35,9 +14,9 @@
 -- logical structure diagrams have been shortened.
 --
 
--- NRTRDE-0201  DEFINITIONS IMPLICIT TAGS  ::= 
+NRTRDE-0201  DEFINITIONS IMPLICIT TAGS  ::=
 
--- BEGIN 
+BEGIN 
 
 --
 -- Structure of a NRTRDE record 
@@ -53,8 +32,7 @@ Nrtrde ::= [APPLICATION 1] SEQUENCE
   fileAvailableTimeStamp     FileAvailableTimeStamp     OPTIONAL, -- *m.m.
   utcTimeOffset              UtcTimeOffset              OPTIONAL, -- *m.m.
   callEvents                 CallEventList              OPTIONAL,
-  callEventsCount            CallEventsCount            OPTIONAL, -- *m.m.
-...
+  callEventsCount            CallEventsCount            OPTIONAL
 }
 
 CallEventList ::=  [APPLICATION 2] SEQUENCE OF CallEvent
@@ -63,8 +41,7 @@ CallEvent ::= CHOICE
 {
   moc       Moc,
   mtc       Mtc,
-  gprs      Gprs,
-...
+  gprs      Gprs
 }
 
 --
@@ -73,7 +50,6 @@ CallEvent ::= CHOICE
 -- are not present in the physical structure, rather
 -- they have been expanded into MOC, MTC and GPRS respectively.
 --
-
 
 Moc ::= [APPLICATION 3] SEQUENCE
 {
@@ -94,8 +70,7 @@ Moc ::= [APPLICATION 3] SEQUENCE
   servingNetwork             ServingNetwork             OPTIONAL,
   msisdn                     Msisdn                     OPTIONAL,
   locationArea               LocationArea               OPTIONAL,
-  cellId                     CellId                     OPTIONAL,
-...
+  cellId                     CellId                     OPTIONAL
 }
 
 Mtc ::= [APPLICATION 4] SEQUENCE
@@ -114,8 +89,7 @@ Mtc ::= [APPLICATION 4] SEQUENCE
   servingNetwork             ServingNetwork             OPTIONAL,
   msisdn                     Msisdn                     OPTIONAL,
   locationArea               LocationArea               OPTIONAL,
-  cellId                     CellId                     OPTIONAL,
-...
+  cellId                     CellId                     OPTIONAL
 }
 
 Gprs ::= [APPLICATION 5] SEQUENCE
@@ -137,8 +111,7 @@ Gprs ::= [APPLICATION 5] SEQUENCE
   servingNetwork             ServingNetwork             OPTIONAL,
   msisdn                     Msisdn                     OPTIONAL,
   locationArea               LocationArea               OPTIONAL,
-  cellId                     CellId                     OPTIONAL,
-...
+  cellId                     CellId                     OPTIONAL
 }
 
 -- 
@@ -202,8 +175,7 @@ SequenceNumber ::= [APPLICATION 39] NumberString --(SIZE(7))
 ServiceCode ::= [APPLICATION 46] CHOICE 
 {
     teleServiceCode      TeleServiceCode,
-    bearerServiceCode    BearerServiceCode,
-...
+    bearerServiceCode    BearerServiceCode
 }
 
 ServingNetwork ::= [APPLICATION 15]  AsciiString

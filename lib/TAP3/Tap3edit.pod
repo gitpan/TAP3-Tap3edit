@@ -211,7 +211,7 @@ Javier Gutierrez <jgutierrez at tap3edit dot com> or http://www.tap3edit.com/en_
 
 =head1 COPYRIGHT
 
-Copyright (c) 2004-2010 Javier Gutierrez. All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
+Copyright (c) 2004-2012 Javier Gutierrez. All rights reserved. This program is free software; you can redistribute it and/or modify it under the same terms as Perl itself.
 
 This program contains TAP and RAP ASN.1 Specifications. The ownership of the TAP/RAP ASN.1 Specifications belongs to the GSM MoU Association (http://www.gsm.org) and should be used under following conditions:
 

@@ -2,9 +2,9 @@
 # designed to decode, modify and encode Roaming GSM TAP/RAP/
 # NRT files
 # 
-# $Id: Tap3edit.pm,v 1.13 2010/06/08 20:50:14 javier Exp $
+# $Id: Tap3edit.pm,v 1.14 2012/05/11 00:47:07 javier Exp $
 # 
-# Copyright (c) 2004-2010 Javier Gutierrez. All rights 
+# Copyright (c) 2004-2012 Javier Gutierrez. All rights 
 # reserved.
 # This program is free software; you can redistribute 
 # it and/or modify it under the same terms as Perl itself.
@@ -48,7 +48,7 @@ use Carp;
 BEGIN {
 	use Exporter;
 	our ($VERSION, @ISA, @EXPORT, @EXPORT_OK, %EXPORT_TAGS);
-	$VERSION = "0.31";
+	$VERSION = "0.32";
 }
 
 
@@ -494,7 +494,6 @@ sub _get_file_version
 		}
 	}
 
-
 	##
 	## 4. According to what is found we set the file_type, version and release.
 	## 
@@ -523,9 +522,9 @@ sub _get_file_version
 		}
 	} elsif ($file_type eq "ACK") {
 		$self->{_version}=1;
-		$self->{_release}=3;
-		$self->{_supl_version}=0;
-		$self->{_supl_release}=0;
+		$self->{_release}=4;
+		$self->{_supl_version}=3;
+		$self->{_supl_release}=10;
 		$self->{_file_type}="RAP";
 	} elsif ($file_type eq "NRT") {
 		if (! $release or ! $version ) {
@@ -663,20 +662,26 @@ sub _select_asn_struct
 	# Following algorithm will strip the chain ",\n..." since the three dots and a comma
 	# in the last element is not supported by Convert::ASN1
 
+    ### 20120501: Following code was commented out because of performance.
+    ###           The specifications were modified instead.
 
-	while($spec_buf_in_tmp =~ /(?:
-			(,[^\n]*\n(?:\s|\t)*?\.\.\.[^\n,]*\n)
-		|
-			([\s|\t]*?\.\.\.(?:\s|\t)*?,[^\n]*\n)
-		|
-			(.*?(?=,[^\n]*\n(?:\s|\t)*?\.\.\.[^\n,]*\n|^[\s|\t]*?\.\.\.(?:\s|\t)*?,[^\n]*\n)?)
-	)/sgxo) {
-		if (defined $1 or defined $2) {
-			$spec_buf_in=$spec_buf_in."\n";
-		} else {
-			$spec_buf_in=$spec_buf_in."$+";
-		}
-	}
+    # while($spec_buf_in_tmp =~ /(?:
+	# 		(,[^\n]*\n(?:\s|\t)*?\.\.\.[^\n,]*\n)
+	# 	|
+	# 		([\s|\t]*?\.\.\.(?:\s|\t)*?,[^\n]*\n)
+	# 	|
+	# 		(\(SIZE\(\d+(?:\.\.\d+)*?\)\))
+    #     |
+    #         (.*?)
+	# )/sgxo) {
+	# 	if (defined $1 or defined $2 or defined $3) {
+	# 		$spec_buf_in=$spec_buf_in."\n";
+	# 	} else {
+	# 		$spec_buf_in=$spec_buf_in."$+";
+	# 	}
+	# }
+
+    $spec_buf_in = $spec_buf_in_tmp;
 
 	##
 	## 3. let's prepare the asn difinition.
@@ -752,8 +757,7 @@ sub decode {
 	## 4. Decode file buffer into the ASN1 tree.
 	##
 
-	my $dic_decode = $self->_dic_asn->decode($buf_in) or do { $self->{error}=$self->_dic_asn->error; croak $self->error() };
-	$self->_dic_decode($dic_decode);
+	$self->{_dic_decode} = $self->_dic_asn->decode($buf_in) or do { $self->{error}=$self->_dic_asn->error; croak $self->error() };
 
 }
 
@@ -777,11 +781,8 @@ sub encode {
 
 
 	##
-	## 1. $dic_decode will be the decoded tree of a real tap file
+	## 1. _dic_decode will be the decoded tree of a real tap file
 	##
-
-	my $dic_decode=$self->_dic_decode;
-
 
 	## 
 	## 2. Select structure according to version, release and type.
@@ -797,7 +798,7 @@ sub encode {
 	## 3. Encode ASN1 tree into the file.
 	## 
 
-	my $buf_out = $self->_dic_asn->encode($dic_decode) or do { $self->{error}=$self->_dic_asn->error; croak $self->error() };
+	my $buf_out = $self->_dic_asn->encode($self->_dic_decode) or do { $self->{error}=$self->_dic_asn->error; croak $self->error() };
 
 
 	## 

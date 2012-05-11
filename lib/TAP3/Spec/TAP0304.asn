@@ -41,9 +41,9 @@
 --
 
 
--- TAP-0304 DEFINITIONS IMPLICIT TAGS ::= 
+TAP-0304 DEFINITIONS IMPLICIT TAGS ::= 
 
--- BEGIN 
+BEGIN 
 
 --
 -- Structure of a Tap batch 
@@ -1533,4 +1533,4 @@ TotalAdvisedChargeValue ::= [APPLICATION 360] SEQUENCE
 TotalAdvisedChargeValueList ::= [APPLICATION 361] SEQUENCE OF TotalAdvisedChargeValue
 
 
--- END
+END

@@ -1,7 +1,17 @@
+2012.05.01 00:00  Javier Gutierrez
+
+	* Updated available specfications.
+	* Added new specification of TAP3.12 and RAP1.5.
+	* Added more tests.
+	* Fix decoding of acknowledge files.
+	* Improved performance.
+
+	New release 0.32
+
 2010.06.07 00:00  Javier Gutierrez
 
-	* Added new specification of TAP3.11 with tag 432
-	* Added support to NRTRDE
+	* Added new specification of TAP3.11 with tag 432.
+	* Added support to NRTRDE.
 
 	New release 0.31
 

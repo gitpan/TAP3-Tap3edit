@@ -28,10 +28,10 @@
 --   (2) Structure of the individual RAP records 
 --   (3) RAP data items and groups of data items
 --
--- 
--- RAP-0103  DEFINITIONS IMPLICIT TAGS  ::= 
--- 
--- BEGIN 
+
+RAP-0103  DEFINITIONS IMPLICIT TAGS  ::= 
+
+BEGIN 
 --
 -- NOTE: As the RAP can be used to report rejections of any
 --       valid TAP release this specification does not indicate
@@ -41,18 +41,18 @@
 --       TAP release version: e.g. 02, 04, 10, 11, ...
 --       making all TAP fields OPTIONAL
 --
--- IMPORTS  AbsoluteAmount, AccountingInfo, AuditControlInfo,
---          BatchControlInfo, CallEventDetail, DateTimeLong,
---          FileSequenceNumber, FileTypeIndicator,
---          MessageDescription, MessageDescriptionCode, NetworkInfo,
---          Notification, NumberString, OperatorSpecInformation,
---          PlmnId, RapFileSequenceNumber, Recipient, ReleaseVersionNumber,
---          Sender, SpecificationVersionNumber
+IMPORTS  AbsoluteAmount, AccountingInfo, AuditControlInfo,
+         BatchControlInfo, CallEventDetail, DateTimeLong,
+         FileSequenceNumber, FileTypeIndicator,
+         MessageDescription, MessageDescriptionCode, NetworkInfo,
+         Notification, NumberString, OperatorSpecInformation,
+         PlmnId, RapFileSequenceNumber, Recipient, ReleaseVersionNumber,
+         Sender, SpecificationVersionNumber
 --       For TAP releases earlier than TAP3.11
 --       uncomment the following line
---          ,VasCode, VasDescription, VasShortDescription
--- FROM TAP-03XX;
--- 
+         ,VasCode, VasDescription, VasShortDescription
+FROM TAP-03XX;
+
 --
 -- Structure of a RAP batch 
 --
@@ -282,4 +282,4 @@ errorDetail		ErrorDetailList
   	errorDetail		ErrorDetailList
   }
 
--- END
+END

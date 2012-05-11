@@ -29,7 +29,7 @@
 --   (3) RAP data items and groups of data items
 --
 
-RAP-0104  DEFINITIONS IMPLICIT TAGS  ::= 
+RAP-0105 DEFINITIONS IMPLICIT TAGS ::= 
 
 BEGIN 
 --
@@ -86,6 +86,7 @@ ReturnDetailList ::= [APPLICATION 536] SEQUENCE OF ReturnDetail
 
 ReturnDetail ::= CHOICE
 {
+   stopReturn   StopReturn,
    missingReturn    MissingReturn,
    fatalReturn  FatalReturn,
    severeReturn SevereReturn
@@ -111,6 +112,12 @@ RapBatchControlInfo ::= [APPLICATION 537] SEQUENCE
    operatorSpecList        OperatorSpecList         OPTIONAL,
    tapDecimalPlaces        TapDecimalPlaces           OPTIONAL,
    tapCurrency             TapCurrency              OPTIONAL
+}
+
+StopReturn ::= [APPLICATION 554] SEQUENCE
+{
+   lastSeqNumber        LastSeqNumber,
+   operatorSpecList OperatorSpecList        OPTIONAL
 }
 
 MissingReturn ::= [APPLICATION 538] SEQUENCE
@@ -205,6 +212,8 @@ ItemLevel ::= [APPLICATION 548] INTEGER
 ItemOccurrence ::= [APPLICATION 547] INTEGER
 
 ItemOffset ::= [APPLICATION 524] INTEGER
+
+LastSeqNumber ::= [APPLICATION 555] FileSequenceNumber
 
 MessageDescriptionError ::= [APPLICATION 522] SEQUENCE
 {
